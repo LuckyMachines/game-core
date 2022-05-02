@@ -2,7 +2,6 @@
   "name": "@luckymachines/game-core",
   "version": "0.0.1",
   "description": "Components for building on chain game backends.",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
