@@ -27,9 +27,4 @@ contract HexGrid is GameBoard {
         }
         _addZones(addresses, aliases, gameID);
     }
-
-    function connectZones(uint256 gameID) public virtual onlyFactoryGM {
-        // connect all zones where appropriate
-        // clockwise from top of hex: 0,1,2,3,4,5
-    }
 }
