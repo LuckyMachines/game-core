@@ -20,6 +20,7 @@ contract GameFactory is Ownable, AccessControlEnumerable {
     // Mappings
     // from creator address
     mapping(address => uint256[]) public gameBoards;
+    mapping(address => uint256[]) public customGameBoards;
     // from game board ID
     mapping(uint256 => address) public gameBoardAddress;
     mapping(uint256 => address) public playerRegistryAddress;
@@ -42,16 +43,40 @@ contract GameFactory is Ownable, AccessControlEnumerable {
             address(newGameBoard),
             gameBoardAdmin
         );
-        gameBoards[_msgSender()].push(_gameBoardIdTracker.current());
-        gameBoardAddress[_gameBoardIdTracker.current()] = address(newGameBoard);
-        playerRegistryAddress[_gameBoardIdTracker.current()] = address(
-            newPlayerRegistry
+        uint256 currentID = _gameBoardIdTracker.current();
+        gameBoards[_msgSender()].push(currentID);
+        gameBoardAddress[currentID] = address(newGameBoard);
+        playerRegistryAddress[currentID] = address(newPlayerRegistry);
+        _gameBoardIdTracker.increment();
+    }
+
+    function addCustomGameBoard(address _gameBoardAddress)
+        public
+        onlyRole(CREATOR_ROLE)
+    {
+        GameBoard customGameBoard = GameBoard(_gameBoardAddress);
+        address gameBoardAdmin = customGameBoard.getRoleMember(
+            DEFAULT_ADMIN_ROLE,
+            0
         );
+        // set game board admin to registry admin as well
+        PlayerRegistry newPlayerRegistry = new PlayerRegistry(
+            _gameBoardAddress,
+            gameBoardAdmin
+        );
+        uint256 currentID = _gameBoardIdTracker.current();
+        customGameBoards[_msgSender()].push(currentID);
+        gameBoardAddress[currentID] = _gameBoardAddress;
+        playerRegistryAddress[currentID] = address(newPlayerRegistry);
         _gameBoardIdTracker.increment();
     }
 
     function getGameBoards() public view returns (uint256[] memory) {
         return gameBoards[_msgSender()];
+    }
+
+    function getCustomBoards() public view returns (uint256[] memory) {
+        return customGameBoards[_msgSender()];
     }
 
     function requestGameID(uint256 gameBoardID) public onlyRole(CREATOR_ROLE) {

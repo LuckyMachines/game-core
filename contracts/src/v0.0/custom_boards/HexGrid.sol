@@ -9,22 +9,82 @@ contract HexGrid is GameBoard {
     uint256 public gridHeight;
     address public zoneAddress;
 
+    string[] public zoneAliases;
+
     constructor(
         address adminAddress,
         uint256 _gridWidth,
         uint256 _gridHeight,
         address _zoneAddress
-    ) GameBoard(adminAddress) {}
+    ) GameBoard(adminAddress) {
+        gridWidth = _gridWidth;
+        gridHeight = _gridHeight;
+        zoneAddress = _zoneAddress;
+    }
 
-    function createGrid(uint256 gameID) public virtual onlyFactoryGM {
+    function createGrid() public virtual onlyFactoryGM {
         address[] memory addresses = new address[](gridWidth * gridHeight);
-        string[] memory aliases = XYCoordinates.coordinates(
-            gridHeight,
-            gridWidth
-        );
+        if (zoneAliases.length == 0) {
+            zoneAliases = XYCoordinates.coordinates(gridHeight, gridWidth);
+        }
         for (uint256 i = 0; i < addresses.length; i++) {
             addresses[i] = zoneAddress;
         }
-        _addZones(addresses, aliases, gameID);
+        // game ID 0 will be prototype for rest of games
+        _addZones(addresses, zoneAliases, 0);
+    }
+
+    function getZoneAliases() public view returns (string[] memory) {
+        return zoneAliases;
+    }
+
+    function getInputs(uint256 gameID, string memory _zoneAlias)
+        public
+        view
+        override
+        returns (string[] memory zoneInputs)
+    {
+        string[] memory gameInputs = playZoneInputs[gameID][_zoneAlias];
+        string[] memory defaultInputs = playZoneInputs[0][_zoneAlias];
+        if (gameInputs.length > 0) {
+            string[] memory aliases = new string[](
+                gameInputs.length + defaultInputs.length
+            );
+            for (uint256 i = 0; i < aliases.length; i++) {
+                if (i < defaultInputs.length) {
+                    aliases[i] = defaultInputs[i];
+                } else {
+                    aliases[i] = gameInputs[i - defaultInputs.length];
+                }
+                zoneInputs = aliases;
+            }
+        } else {
+            zoneInputs = defaultInputs;
+        }
+    }
+
+    function getOutputs(uint256 gameID, string memory _zoneAlias)
+        public
+        view
+        override
+        returns (string[] memory zoneOutputs)
+    {
+        string[] memory gameOutputs = playZoneOutputs[gameID][_zoneAlias];
+        string[] memory defaultOutputs = playZoneOutputs[0][_zoneAlias];
+        if (gameOutputs.length > 0) {
+            string[] memory aliases = new string[](
+                gameOutputs.length + defaultOutputs.length
+            );
+            for (uint256 i = 0; i < aliases.length; i++) {
+                if (i < defaultOutputs.length) {
+                    aliases[i] = defaultOutputs[i];
+                } else {
+                    aliases[i] = gameOutputs[i - defaultOutputs.length];
+                }
+                zoneOutputs = aliases;
+            }
+        } else {
+            zoneOutputs = defaultOutputs;
+        }
     }
 }

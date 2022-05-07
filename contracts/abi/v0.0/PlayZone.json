@@ -102,6 +102,19 @@
     },
     {
         "inputs": [],
+        "name": "CONTROLLER_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "DEFAULT_ADMIN_ROLE",
         "outputs": [
             {
@@ -455,6 +468,32 @@
             }
         ],
         "name": "removeGameBoard",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "controllerAddress",
+                "type": "address"
+            }
+        ],
+        "name": "addController",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "controllerAddress",
+                "type": "address"
+            }
+        ],
+        "name": "removeController",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

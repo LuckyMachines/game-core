@@ -10,6 +10,7 @@ import "./GameRegistry.sol";
 contract PlayZone is AccessControlEnumerable {
     bytes32 public constant GAME_BOARD_ROLE = keccak256("GAME_BOARD_ROLE");
     bytes32 public constant FACTORY_ROLE = keccak256("FACTORY_ROLE");
+    bytes32 public constant CONTROLLER_ROLE = keccak256("CONTROLLER_ROLE");
 
     Ruleset internal RULESET;
     address public gameRegistryAddress;
@@ -70,6 +71,17 @@ contract PlayZone is AccessControlEnumerable {
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _revokeRole(GAME_BOARD_ROLE, gameBoardAddress);
+    }
+
+    function addController(address controllerAddress) public onlyFactoryAdmin {
+        _setupRole(CONTROLLER_ROLE, controllerAddress);
+    }
+
+    function removeController(address controllerAddress)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _revokeRole(CONTROLLER_ROLE, controllerAddress);
     }
 
     function setRules(
@@ -147,7 +159,7 @@ contract PlayZone is AccessControlEnumerable {
         address playerAddress,
         uint256 gameID,
         string memory zoneAlias
-    ) public view returns (bool canEnter) {
+    ) public view virtual returns (bool canEnter) {
         canEnter = true;
         //canEnter = playerInPlayableState(playerAddress, gameID);
         if (playerInZone[gameID][zoneAlias][playerAddress]) {
@@ -179,7 +191,7 @@ contract PlayZone is AccessControlEnumerable {
         address playerAddress,
         uint256 gameID,
         string memory zoneAlias
-    ) public view returns (bool canExit) {
+    ) public view virtual returns (bool canExit) {
         canExit = true;
         //canExit = playerInPlayableState(playerAddress, gameID);
 

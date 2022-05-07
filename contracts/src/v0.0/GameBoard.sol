@@ -3,7 +3,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Counters.sol"; 
 import "./PlayerRegistry.sol";
 import "./GameRegistry.sol";
 import "./PlayZone.sol";
@@ -219,6 +219,7 @@ contract GameBoard is AccessControlEnumerable {
 
     function getOverflowQueue(uint256 gameID)
         public
+        virtual
         view
         returns (uint256[] memory)
     {
@@ -227,6 +228,7 @@ contract GameBoard is AccessControlEnumerable {
 
     function getPlayZones(uint256 gameID)
         public
+        virtual
         view
         returns (string[] memory)
     {
@@ -235,6 +237,7 @@ contract GameBoard is AccessControlEnumerable {
 
     function getInputs(uint256 gameID, string memory _zoneAlias)
         public
+        virtual
         view
         returns (string[] memory zoneInputs)
     {
@@ -243,6 +246,7 @@ contract GameBoard is AccessControlEnumerable {
 
     function getOutputs(uint256 gameID, string memory _zoneAlias)
         public
+        virtual
         view
         returns (string[] memory zoneOutputs)
     {
@@ -301,12 +305,12 @@ contract GameBoard is AccessControlEnumerable {
         uint256 gameID,
         address playerAddress,
         uint256 pathIndex
-    ) external returns (bool exitSuccess) {
+    ) external virtual returns (bool exitSuccess) {
         // TODO: make sure zone calling is same as zone player is trying to exit
         uint256 playerID = PLAYER_REGISTRY.playerID(gameID, playerAddress);
         string memory originZoneAlias = currentPlayZone[gameID][playerID];
-        uint256 availablePaths = playZoneOutputs[gameID][originZoneAlias]
-            .length;
+        string[] memory outputs = getOutputs(gameID, originZoneAlias);
+        uint256 availablePaths = outputs.length;
         require(availablePaths > 0, "No exit paths available");
 
         exitSuccess = false;
@@ -314,9 +318,7 @@ contract GameBoard is AccessControlEnumerable {
         PlayZone originPlayZone = PlayZone(zoneAlias[gameID][originZoneAlias]);
 
         uint256 path = pathIndex > availablePaths ? 0 : pathIndex;
-        string memory destinationZoneAlias = playZoneOutputs[gameID][
-            originZoneAlias
-        ][path];
+        string memory destinationZoneAlias = outputs[path];
         PlayZone destinationPlayZone = PlayZone(
             zoneAlias[gameID][destinationZoneAlias]
         );
