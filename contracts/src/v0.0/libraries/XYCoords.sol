@@ -62,8 +62,8 @@ library XYCoordinates {
             "50"
         ];
         uint256 curIndex = 0;
-        for (uint256 i = 0; i < numRows; i++) {
-            for (uint256 j = 0; j < numColumns; j++) {
+        for (uint256 i = 0; i < numColumns; i++) {
+            for (uint256 j = 0; j < numRows; j++) {
                 allCoords[curIndex] = string(
                     abi.encodePacked(nums[i], ",", nums[j])
                 );

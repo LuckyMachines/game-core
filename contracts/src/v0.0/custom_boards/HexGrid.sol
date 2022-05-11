@@ -23,15 +23,17 @@ contract HexGrid is GameBoard {
     }
 
     function createGrid() public virtual onlyFactoryGM {
-        address[] memory addresses = new address[](gridWidth * gridHeight);
         if (zoneAliases.length == 0) {
+            address[] memory addresses = new address[](gridWidth * gridHeight);
+
             zoneAliases = XYCoordinates.coordinates(gridHeight, gridWidth);
+
+            for (uint256 i = 0; i < addresses.length; i++) {
+                addresses[i] = zoneAddress;
+            }
+            // game ID 0 will be prototype for rest of games
+            _addZones(addresses, zoneAliases, 0);
         }
-        for (uint256 i = 0; i < addresses.length; i++) {
-            addresses[i] = zoneAddress;
-        }
-        // game ID 0 will be prototype for rest of games
-        _addZones(addresses, zoneAliases, 0);
     }
 
     function getZoneAliases() public view returns (string[] memory) {
