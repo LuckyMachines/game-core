@@ -3,13 +3,15 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol"; 
+import "@openzeppelin/contracts/utils/Counters.sol";
 import "./PlayerRegistry.sol";
 import "./GameRegistry.sol";
 import "./PlayZone.sol";
 
 contract GameBoard is AccessControlEnumerable {
     using Counters for Counters.Counter;
+    bytes32 public constant VERIFIED_CONTROLLER_ROLE =
+        keccak256("VERIFIED_CONTROLLER_ROLE");
     bytes32 public constant GAME_MASTER_ROLE = keccak256("GAME_MASTER_ROLE");
     bytes32 public constant GAME_KEEPER_ROLE = keccak256("GAME_KEEPER_ROLE");
     bytes32 public constant FACTORY_ROLE = keccak256("FACTORY_ROLE");
@@ -139,6 +141,13 @@ contract GameBoard is AccessControlEnumerable {
         _setupRole(GAME_KEEPER_ROLE, keeperAddress);
     }
 
+    function addVerifiedController(address vcAddress)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        grantRole(VERIFIED_CONTROLLER_ROLE, vcAddress);
+    }
+
     function startGame(uint256 gameID) public onlyRole(GAME_MASTER_ROLE) {
         // lock registration
         //_startGameInit(gameID);
@@ -219,8 +228,8 @@ contract GameBoard is AccessControlEnumerable {
 
     function getOverflowQueue(uint256 gameID)
         public
-        virtual
         view
+        virtual
         returns (uint256[] memory)
     {
         return entryQueue[gameID];
@@ -228,8 +237,8 @@ contract GameBoard is AccessControlEnumerable {
 
     function getPlayZones(uint256 gameID)
         public
-        virtual
         view
+        virtual
         returns (string[] memory)
     {
         return playZones[gameID];
@@ -237,8 +246,8 @@ contract GameBoard is AccessControlEnumerable {
 
     function getInputs(uint256 gameID, string memory _zoneAlias)
         public
-        virtual
         view
+        virtual
         returns (string[] memory zoneInputs)
     {
         zoneInputs = playZoneInputs[gameID][_zoneAlias];
@@ -246,8 +255,8 @@ contract GameBoard is AccessControlEnumerable {
 
     function getOutputs(uint256 gameID, string memory _zoneAlias)
         public
-        virtual
         view
+        virtual
         returns (string[] memory zoneOutputs)
     {
         zoneOutputs = playZoneOutputs[gameID][_zoneAlias];
