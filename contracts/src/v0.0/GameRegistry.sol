@@ -47,4 +47,16 @@ contract GameRegistry is AccessControlEnumerable {
     {
         return gameIDs[_msgSender()];
     }
+
+    function latestGame(address gameBoardAddress)
+        public
+        returns (uint256 gameID)
+    {
+        gameID = 0;
+        uint256 l = gameIDs[gameBoardAddress].length;
+        if (l > 0) {
+            uint256[] memory ids = gameIDs[gameBoardAddress];
+            gameID = ids[l - 1];
+        }
+    }
 }
