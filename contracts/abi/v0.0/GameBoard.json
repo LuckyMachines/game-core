@@ -355,6 +355,25 @@
                 "type": "uint256"
             }
         ],
+        "name": "initialPlayZone",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
         "name": "lastEntryPlayerID",
         "outputs": [
             {
@@ -694,6 +713,24 @@
             }
         ],
         "name": "addVerifiedController",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "initialZone",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "gameID",
+                "type": "uint256"
+            }
+        ],
+        "name": "setInitialPlayZone",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

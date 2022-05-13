@@ -30,6 +30,7 @@ contract GameBoard is AccessControlEnumerable {
     // TODO:
     // make sure these aliases work instead of addresses
     mapping(uint256 => string[]) public playZones;
+    mapping(uint256 => string) public initialPlayZone;
     mapping(uint256 => mapping(string => address)) public zoneAlias; // returns address of zone alias
     // playZoneInputs[gameID][zone alias] = array of inputs for given zone
     mapping(uint256 => mapping(string => string[])) public playZoneInputs;
@@ -148,6 +149,17 @@ contract GameBoard is AccessControlEnumerable {
         grantRole(VERIFIED_CONTROLLER_ROLE, vcAddress);
     }
 
+    function setInitialPlayZone(string memory initialZone, uint256 gameID)
+        public
+        onlyRole(VERIFIED_CONTROLLER_ROLE)
+    {
+        require(
+            gameState[gameID] == 0,
+            "can't set initial zone, game already started"
+        );
+        initialPlayZone[gameID] = initialZone;
+    }
+
     function startGame(uint256 gameID) public onlyRole(GAME_MASTER_ROLE) {
         // lock registration
         //_startGameInit(gameID);
@@ -201,7 +213,10 @@ contract GameBoard is AccessControlEnumerable {
     }
 
     function _continueGameInit(uint256 gameID) internal {
-        address zoneAddress = zoneAlias[gameID][playZones[gameID][0]];
+        string memory za = bytes(initialPlayZone[gameID]).length != 0
+            ? initialPlayZone[gameID]
+            : playZones[gameID][0];
+        address zoneAddress = zoneAlias[gameID][za];
         PlayZone pz = PlayZone(zoneAddress);
 
         for (
@@ -214,10 +229,8 @@ contract GameBoard is AccessControlEnumerable {
                 gameID,
                 playerID
             );
-            if (
-                pz.playerCanEnter(playerAddress, gameID, playZones[gameID][0])
-            ) {
-                pz.enterPlayer(playerAddress, gameID, playZones[gameID][0]);
+            if (pz.playerCanEnter(playerAddress, gameID, za)) {
+                pz.enterPlayer(playerAddress, gameID, za);
             } else {
                 entryQueue[gameID].push(playerID);
             }
