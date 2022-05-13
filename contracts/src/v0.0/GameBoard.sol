@@ -13,14 +13,13 @@ contract GameBoard is AccessControlEnumerable {
     bytes32 public constant VERIFIED_CONTROLLER_ROLE =
         keccak256("VERIFIED_CONTROLLER_ROLE");
     bytes32 public constant GAME_MASTER_ROLE = keccak256("GAME_MASTER_ROLE");
-    bytes32 public constant GAME_KEEPER_ROLE = keccak256("GAME_KEEPER_ROLE");
     bytes32 public constant FACTORY_ROLE = keccak256("FACTORY_ROLE");
     bytes32 public constant PLAY_ZONE_ROLE = keccak256("PLAY_ZONE_ROLE");
     PlayerRegistry internal PLAYER_REGISTRY;
 
     uint256 public constant MAX_BATCH_SIZE = 200;
 
-    uint256[] private _gamesNeedUpdates;
+    uint256[] internal _gamesNeedUpdates;
 
     // Mappings from GameID
     mapping(uint256 => uint256) public gameState; // 0 = start, 1=continue initializing, 2=initialized
@@ -139,7 +138,7 @@ contract GameBoard is AccessControlEnumerable {
         public
         onlyRole(GAME_MASTER_ROLE)
     {
-        _setupRole(GAME_KEEPER_ROLE, keeperAddress);
+        _setupRole(VERIFIED_CONTROLLER_ROLE, keeperAddress);
     }
 
     function addVerifiedController(address vcAddress)
@@ -177,7 +176,7 @@ contract GameBoard is AccessControlEnumerable {
         }
     }
 
-    function runUpdate() public onlyRole(GAME_KEEPER_ROLE) {
+    function runUpdate() public onlyRole(VERIFIED_CONTROLLER_ROLE) {
         uint256 gameToUpdate;
         uint256 gameIndex;
         for (uint256 i = 0; i < _gamesNeedUpdates.length; i++) {
@@ -390,7 +389,7 @@ contract GameBoard is AccessControlEnumerable {
 
     function _progressTransit(uint256 transitID)
         public
-        onlyRole(GAME_KEEPER_ROLE)
+        onlyRole(VERIFIED_CONTROLLER_ROLE)
     {
         // moves group transit along, marks as complete at finish
     }

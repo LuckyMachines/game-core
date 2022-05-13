@@ -50,6 +50,7 @@ contract GameRegistry is AccessControlEnumerable {
 
     function latestGame(address gameBoardAddress)
         public
+        view
         returns (uint256 gameID)
     {
         gameID = 0;
