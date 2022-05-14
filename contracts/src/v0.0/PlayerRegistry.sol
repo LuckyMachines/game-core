@@ -9,7 +9,7 @@ import "./GameBoard.sol";
 
 contract PlayerRegistry is AccessControlEnumerable {
     bytes32 public constant REGISTRAR_ROLE = keccak256("REGISTRAR_ROLE");
-    bytes32 public constant GAME_BOARD_ROLE = keccak256("GAMEBOARD_ROLE");
+    bytes32 public constant GAME_BOARD_ROLE = keccak256("GAME_BOARD_ROLE");
 
     GameBoard internal GAME_BOARD;
 
