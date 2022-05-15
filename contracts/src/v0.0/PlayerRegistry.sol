@@ -8,7 +8,6 @@ import "./GameBoard.sol";
 // each registry can have custom rules for registration
 
 contract PlayerRegistry is AccessControlEnumerable {
-    bytes32 public constant REGISTRAR_ROLE = keccak256("REGISTRAR_ROLE");
     bytes32 public constant GAME_BOARD_ROLE = keccak256("GAME_BOARD_ROLE");
 
     GameBoard internal GAME_BOARD;
@@ -25,7 +24,6 @@ contract PlayerRegistry is AccessControlEnumerable {
     constructor(address gameBoardAddress, address adminAddress) {
         GAME_BOARD = GameBoard(gameBoardAddress);
         _setupRole(DEFAULT_ADMIN_ROLE, adminAddress);
-        _setupRole(REGISTRAR_ROLE, adminAddress);
         _setupRole(GAME_BOARD_ROLE, gameBoardAddress);
     }
 
@@ -47,7 +45,7 @@ contract PlayerRegistry is AccessControlEnumerable {
 
     function registerPlayer(address _playerAddress, uint256 gameID)
         public
-        onlyRole(REGISTRAR_ROLE)
+        onlyRole(GAME_BOARD_ROLE)
     {
         require(
             _canRegister(_playerAddress, gameID),
