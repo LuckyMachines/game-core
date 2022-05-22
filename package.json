@@ -10,7 +10,7 @@
     "url": "git+https://github.com/StudioMaxIO/game-core.git"
   },
   "keywords": ["blockchain", "gaming"],
-  "author": "Lucky Machines, LLC",
+  "author": "Max Meier",
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/StudioMaxIO/game-core/issues"
