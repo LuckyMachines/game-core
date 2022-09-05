@@ -155,6 +155,8 @@ contract PlayZone is AccessControlEnumerable {
         // TODO: check for transit group action
     }
 
+    // OVERRIDE HUB FUNCTIONS
+
     function playerCanEnter(
         address playerAddress,
         uint256 gameID,

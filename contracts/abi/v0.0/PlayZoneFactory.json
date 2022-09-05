@@ -417,7 +417,7 @@
                 "type": "address"
             }
         ],
-        "name": "createPlayZone",
+        "name": "createPlayZoneWithRuleset",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"

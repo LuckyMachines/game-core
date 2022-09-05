@@ -47,7 +47,7 @@ contract PlayZoneFactory is Ownable, AccessControlEnumerable {
         rulesetAddress[address(newPlayZone)] = address(newRuleset);
     }
 
-    function createPlayZone(address _rulesetAddress)
+    function createPlayZoneWithRuleset(address _rulesetAddress)
         public
         onlyRole(CREATOR_ROLE)
     {
