@@ -54,6 +54,13 @@ contract PlayerRegistry is AccessControlEnumerable {
         _register(gameID, _playerAddress);
     }
 
+    function setRegistrationLimit(uint256 limit, uint256 gameID)
+        public
+        onlyRole(GAME_BOARD_ROLE)
+    {
+        registrationLimit[gameID] = limit;
+    }
+
     function playerAddressesInRange(
         uint256 startingID,
         uint256 maxID,

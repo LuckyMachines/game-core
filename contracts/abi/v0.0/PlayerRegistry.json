@@ -463,6 +463,24 @@
         "inputs": [
             {
                 "internalType": "uint256",
+                "name": "limit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "gameID",
+                "type": "uint256"
+            }
+        ],
+        "name": "setRegistrationLimit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
                 "name": "startingID",
                 "type": "uint256"
             },
