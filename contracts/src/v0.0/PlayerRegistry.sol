@@ -14,12 +14,15 @@ contract PlayerRegistry is AccessControlEnumerable {
 
     // Mappings from gameID
     //  or [game ID][player address]
-    mapping(uint256 => mapping(address => bool)) public isRegistered;
-    mapping(uint256 => mapping(address => uint256)) public playerID;
-    mapping(uint256 => mapping(uint256 => address)) public playerAddress;
     mapping(uint256 => uint256) public totalRegistrations;
     mapping(uint256 => uint256) public registrationLimit;
     mapping(uint256 => bool) public registrationLocked;
+    mapping(uint256 => mapping(address => bool)) public isRegistered;
+    mapping(uint256 => mapping(address => uint256)) public playerID;
+
+    // Mappings from gameID => playerID
+    mapping(uint256 => mapping(uint256 => address)) public playerAddress;
+    mapping(uint256 => mapping(uint256 => bool)) public isActive;
 
     constructor(address gameBoardAddress, address adminAddress) {
         GAME_BOARD = GameBoard(gameBoardAddress);
@@ -59,6 +62,20 @@ contract PlayerRegistry is AccessControlEnumerable {
         onlyRole(GAME_BOARD_ROLE)
     {
         registrationLimit[gameID] = limit;
+    }
+
+    function setPlayerInactive(uint256 _playerID, uint256 gameID)
+        external
+        onlyRole(GAME_BOARD_ROLE)
+    {
+        isActive[gameID][_playerID] = false;
+    }
+
+    function setPlayerActive(uint256 _playerID, uint256 gameID)
+        external
+        onlyRole(GAME_BOARD_ROLE)
+    {
+        isActive[gameID][_playerID] = true;
     }
 
     function playerAddressesInRange(
@@ -107,6 +124,7 @@ contract PlayerRegistry is AccessControlEnumerable {
             totalRegistrations[gameID] = newID;
             playerID[gameID][player] = newID;
             playerAddress[gameID][newID] = player;
+            isActive[gameID][newID] = true;
         }
     }
 

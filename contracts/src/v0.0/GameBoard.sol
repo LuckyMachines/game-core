@@ -166,6 +166,20 @@ contract GameBoard is AccessControlEnumerable {
         _gamesNeedUpdates.push(gameID);
     }
 
+    function setPlayerInactive(uint256 _playerID, uint256 gameID)
+        public
+        onlyRole(VERIFIED_CONTROLLER_ROLE)
+    {
+        PLAYER_REGISTRY.setPlayerInactive(_playerID, gameID);
+    }
+
+    function setPlayerActive(uint256 _playerID, uint256 gameID)
+        public
+        onlyRole(VERIFIED_CONTROLLER_ROLE)
+    {
+        PLAYER_REGISTRY.setPlayerActive(_playerID, gameID);
+    }
+
     function needsUpdate() public view returns (bool doesNeedUpdate) {
         doesNeedUpdate = false;
         for (uint256 i = 0; i < _gamesNeedUpdates.length; i++) {
