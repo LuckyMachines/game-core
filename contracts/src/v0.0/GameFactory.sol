@@ -2,13 +2,11 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./GameBoard.sol";
-import "./GameRegistry.sol";
 
-contract GameFactory is Ownable, AccessControlEnumerable {
+contract GameFactory is AccessControlEnumerable {
     using Counters for Counters.Counter;
 
     bytes32 public constant CREATOR_ROLE = keccak256("CREATOR_ROLE");
