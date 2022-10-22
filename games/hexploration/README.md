@@ -48,7 +48,7 @@ A contract with all view functions that return summaries of current game state. 
 | [lastPlayerActions](#lastplayeractions)       | Summary of the latest player actions     | Public     |
 | [totalPlayers](#totalplayers)                 | Total players registered for a game      | Public     |
 
-### Player Summary Functions
+### Individual Player Summary Functions
 
 | **Name**                                      | **Description**                               | **Caller** |
 | --------------------------------------------- | --------------------------------------------- | ---------- |
@@ -599,41 +599,6 @@ isAtCampsite(address gameBoardAddress, uint256 gameID)
 
 `(bool)atCampsite`: Whether or not the player is currently at a campsite.
 
-### Enumerations
-
-#### Tiles
-
-```solidity
-enum Tile {
-        Default,
-        Jungle,
-        Plains,
-        Desert,
-        Mountain,
-        LandingSite,
-        RelicMystery,
-        Relic1,
-        Relic2,
-        Relic3,
-        Relic4,
-        Relic5
-    }
-```
-
-#### Actions
-
-```solidity
-enum Action {
-        Idle,
-        Move,
-        SetupCamp,
-        BreakDownCamp,
-        Dig,
-        Rest,
-        Help
-    }
-```
-
 ## Game Controller (HexplorationController.sol)
 
 ### Functions
@@ -693,3 +658,38 @@ Method description
 - `(type)return1`: About return 1
 
 ## Game Events (GameEvents.sol)
+
+### Enumerations
+
+#### Tiles
+
+```solidity
+enum Tile {
+        Default,
+        Jungle,
+        Plains,
+        Desert,
+        Mountain,
+        LandingSite,
+        RelicMystery,
+        Relic1,
+        Relic2,
+        Relic3,
+        Relic4,
+        Relic5
+    }
+```
+
+#### Actions
+
+```solidity
+enum Action {
+        Idle,
+        Move,
+        SetupCamp,
+        BreakDownCamp,
+        Dig,
+        Rest,
+        Help
+    }
+```
