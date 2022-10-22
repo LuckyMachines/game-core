@@ -695,38 +695,184 @@ Action options are passed as an array of strings. For single values pass an arra
 
 ## Game Events (GameEvents.sol)
 
-### Functions
+### Events
 
-| **Name** | **Description** |
-| -------- | --------------- |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
+| **Name**                                        | **Description**                          |
+| ----------------------------------------------- | ---------------------------------------- |
+| [ActionSubmit](#actionsubmit)                   | A player action was submitted            |
+| [EndGameStarted](#endgamestarted)               | The end game has started                 |
+| [GamePhaseChange](#gamephasechange)             | Game phase has changed (night / day)     |
+| [GameRegistration](#gameregistration)           | A player registered for the game         |
+| [GameStart](#gamestart)                         | The game has started                     |
+| [LandingSiteSet](#landingsiteset)               | The landing site has been chosen         |
+| [PlayerIdleKick](#playeridlekick)               | A player was kicked due to idleness      |
+| [ProcessingPhaseChange](#processingphasechange) | The turn processing is in a new phase    |
+| [TurnProcessingStart](#turnprocessingstart)     | The first phase of turn processing began |
 
-#### methodName
+#### ActionSubmit
 
-Method description
+This event is emitted each time a player submits a move.
 
-    method signature
+```solidity
+event ActionSubmit(
+    uint256 indexed gameID,
+    uint256 playerID,
+    uint256 actionID,
+    uint256 timeStamp
+);
+```
 
 ##### Parameters
 
-- `(type)parameter1`: About param 1
+`(uint256)gameID`: The game to which the action was submitted.
 
-##### Return Values
+`(uint256)playerID`: The player that submitted the action.
 
-- `(type)return1`: About return 1
+`(uint256)actionID`: The [enumerated action](#actions) that was submitted.
 
-## Game Events (GameEvents.sol)
+`(uint256)timeStamp`: The time the action was submitted.
 
-### Enumerations
+#### EndGameStarted
 
-#### Tiles
+This event is emitted when the end game has begun.
+
+```solidity
+event EndGameStarted(
+        uint256 indexed gameID,
+        uint256 timeStamp,
+        string scenario
+    )
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game in which the end game began.
+
+`(uint256)timeStamp`: The time the end game was started.
+
+`(string)scenario`: The end game scenario to take place.
+
+#### GamePhaseChange
+
+This event is emitted when the game phase changes between `"Night"` and `"Day"`.
+
+```solidity
+event GamePhaseChange(
+        uint256 indexed gameID,
+        uint256 timeStamp,
+        string newPhase
+    )
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game in which the phase changed.
+
+`(uint256)timeStamp`: The time the game phase changed.
+
+`(string)newPhase`: The current game phase, either `"Night"` or `"Day"`.
+
+#### GameRegistration
+
+This event is emitted each time a player registers for a game.
+
+```solidity
+event GameRegistration(uint256 indexed gameID, address playerAddress)
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game for which the player registered.
+
+`(address)playerAddress`: The wallet address of the registered player.
+
+#### GameStart
+
+This event is emitted when a game begins. A game begins after a landing site has been chosen and all players can begin to submit actions.
+
+```solidity
+event GameStart(uint256 indexed gameID, uint256 timeStamp)
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game that started.
+
+`(uint256)timeStamp`: The time the game started.
+
+#### LandingSiteSet
+
+This event is emitted once a location for the landing site has been set.
+
+```solidity
+event LandingSiteSet(uint256 indexed gameID, string landingSite)
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game in which the landing site was set.
+
+`(string)landingSite`: The play zone alias of the landing site.
+
+#### PlayerIdleKick
+
+This event is emitted when a player is kicked from the game due to idleness. This is currently happens if a player does not submit an action for 3 consecutive turns.
+
+```solidity
+event PlayerIdleKick(
+        uint256 indexed gameID,
+        uint256 playerID,
+        uint256 timeStamp
+    )
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game from which the player was kicked.
+
+`(uint256)playerID`: The player that was kicked from the game.
+
+`(uint256)timeStamp`: The time the player was kicked from the game.
+
+#### ProcessingPhaseChange
+
+This event is emitted when the turn processing enters a new phase. The sequence of phases can be seen in the [Game Turn Processing enumeration](#game-turn-processing).
+
+```solidity
+event ProcessingPhaseChange(
+        uint256 indexed gameID,
+        uint256 timeStamp,
+        uint256 newPhase
+    )
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game in which the processing phase changed.
+
+`(uint256)timeStamp`: The time the processing phase was changed.
+
+`(uint256)newPhase`: The current [enumerated processing phase](#game-turn-processing).
+
+#### TurnProcessingStart
+
+This event is emitted when the [turn processing phase](#game-turn-processing) is set to `Processing`.
+
+```solidity
+event TurnProcessingStart(uint256 indexed gameID, uint256 timeStamp)
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game in which the turn processing phase started.
+
+`(uint256)timeStamp`: The time the action was submitted.
+
+---
+
+## Enumerations
+
+### Tiles
 
 ```solidity
 enum Tile {
@@ -745,7 +891,7 @@ enum Tile {
     }
 ```
 
-#### Actions
+### Actions
 
 ```solidity
 enum Action {
@@ -756,5 +902,18 @@ enum Action {
         Dig,
         Rest,
         Help
+    }
+```
+
+### Game Turn Processing
+
+```solidity
+enum ProcessingPhase {
+        Start,
+        Submission,
+        Processing,
+        PlayThrough,
+        Processed,
+        Closed
     }
 ```
