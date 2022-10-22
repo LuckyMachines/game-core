@@ -175,7 +175,7 @@ canDigAtZone(
 
 `(uint256)gameID`: ID of the game.
 
-`(uint256)_zoneAlias_`: Alias of the zone to query. This is the string representation of the column(x) and the row(y) in the form "x,y", e.g. "2,3" for zone at column 2, row 3.
+`(uint256)_zoneAlias`: Alias of the zone to query. This is the string representation of the column(x) and the row(y) in the form "x,y", e.g. "2,3" for zone at column 2, row 3.
 
 ##### Return Values
 
