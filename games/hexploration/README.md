@@ -76,7 +76,7 @@ activeZones(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -99,7 +99,7 @@ allPlayerLocations(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -122,7 +122,7 @@ boardSize(address gameBoardAddress)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 ##### Return Values
 
@@ -144,7 +144,7 @@ canDigAtZone(
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -167,7 +167,7 @@ currentGameplayQueue(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -188,7 +188,7 @@ currentPhase(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -216,7 +216,7 @@ getAvailableGames(
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -241,7 +241,7 @@ landingSite(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -269,7 +269,7 @@ lastDayPhaseEvents(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -308,7 +308,7 @@ lastPlayerActions(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -341,7 +341,7 @@ totalPlayers(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -363,7 +363,7 @@ getPlayerID(
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -394,7 +394,7 @@ isActive(
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -418,7 +418,7 @@ isRegistered(
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -439,7 +439,7 @@ activeAction(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -466,7 +466,7 @@ activeInventory(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -495,7 +495,7 @@ currentHandInventory(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -518,7 +518,7 @@ currentLocation(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -543,7 +543,7 @@ currentPlayerStats(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -568,7 +568,7 @@ inactiveInventory(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -591,7 +591,7 @@ isAtCampsite(address gameBoardAddress, uint256 gameID)
 
 ##### Parameters
 
-`(address)gameBoardAddress`: Contract address of the game board.
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
 `(uint256)gameID`: ID of the game.
 
@@ -603,30 +603,87 @@ isAtCampsite(address gameBoardAddress, uint256 gameID)
 
 ### Functions
 
-| **Name** | **Description** |
-| -------- | --------------- |
-| [](#)    |                 |
-| [](#)    |                 |
-| [](#)    |                 |
-| [](#)    |                 |
-| [](#)    |                 |
-| [](#)    |                 |
-| [](#)    |                 |
-| [](#)    |                 |
+| **Name**                            | **Description** |
+| ----------------------------------- | --------------- |
+| [registerForGame](#registerforgame) |                 |
+| [requestNewGame](#requestnewgame)   |                 |
+| [submitAction](#submitaction)       |                 |
 
-#### methodName
+#### registerForGame
 
-Method description
+Registers a player for the specified game. Available games can be found in the [Game Summary](#getavailablegames).
 
-    method signature
+```solidity
+registerForGame(uint256 gameID, address boardAddress) public
+```
 
 ##### Parameters
 
-- `(type)parameter1`: About param 1
+`(uint256)gameID`: ID of the game.
 
-##### Return Values
+`(address)boardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
 
-- `(type)return1`: About return 1
+#### requestNewGame
+
+Requests a new game, with a designated player size of 1 - 4. Games created from this method can be found in the [Game Summary](#getavailablegames).
+
+```solidity
+requestNewGame(
+    address gameRegistryAddress,
+    address boardAddress,
+    uint256 totalPlayers
+) public
+```
+
+##### Parameters
+
+`(address)gameRegistryAddress`: Game registry contract on which to request new game. This can be found in [deployments.json](#deployed-contracts).
+
+`(address)boardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)totalPlayers`: Total players to allow in game. This can be between 1 - 4.
+
+#### submitAction
+
+Submit actions and equip item for a specified game. Players can submit one action and one hand equip each turn. The transaction will fail if multiple hands are submitted in the same submission.
+
+```solidity
+submitAction(
+        uint256 playerID,
+        uint8 actionIndex,
+        string[] memory options,
+        string memory leftHand,
+        string memory rightHand,
+        uint256 gameID,
+        address boardAddress
+    ) public
+```
+
+##### Parameters
+
+`(uint256)playerID`: Player ID for whom this move is intended.
+
+`(uint8)actionIndex`: Index of the action to submit. See [Action enumeration](#actions).
+
+`(string[])options`: [Options](#action-options) that correspond with the submitted action.
+
+`(string)leftHand`: Item to equip in left hand or pass "" to bypass. Pass "None" to remove item from left hand.
+
+`(string)rightHand`: Item to equip in right hand or pass "" to bypass. Pass "None" to remove item from right hand.
+
+`(uint256)gameID`: ID of the game.
+
+`(address)boardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+##### Action options
+
+Action options are passed as an array of strings. For single values pass an array with that one element. When passing an integer, use the string representation of the value.
+
+- **Move**: The path of movement as an array of strings, e.g. `["2,2","3,3","4,3"]`.
+
+- **Help**: The ID of the player to help / revive, e,g, `["3"]`.
+
+- **Rest**: The attribute to rest and improve. Can choose `["Movement"]`, `["Agility"]`, or `["Dexterity"]`.
 
 ## Game Events (GameEvents.sol)
 
