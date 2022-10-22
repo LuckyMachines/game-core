@@ -55,41 +55,6 @@ A contract with all view functions that return summaries of current game state. 
 | [inactiveInventory](#inactiveinventory)       | Items held by player, but not active (in bag) | Player     |
 | [isAtCampsite](#isatcampsite)                 | Check if player is at a campsite              | Player     |
 
-### Enumerations
-
-#### Tiles
-
-```solidity
-enum Tile {
-        Default,
-        Jungle,
-        Plains,
-        Desert,
-        Mountain,
-        LandingSite,
-        RelicMystery,
-        Relic1,
-        Relic2,
-        Relic3,
-        Relic4,
-        Relic5
-    }
-```
-
-#### Actions
-
-```solidity
-enum Action {
-        Idle,
-        Move,
-        SetupCamp,
-        BreakDownCamp,
-        Dig,
-        Rest,
-        Help
-    }
-```
-
 #### activeZones
 
 All zones which have been revealed on the game board and their corresponding tiles.
@@ -626,20 +591,55 @@ isAtCampsite(address gameBoardAddress, uint256 gameID)
 
 `(bool)atCampsite`: Whether or not the player is currently at a campsite.
 
+### Enumerations
+
+#### Tiles
+
+```solidity
+enum Tile {
+        Default,
+        Jungle,
+        Plains,
+        Desert,
+        Mountain,
+        LandingSite,
+        RelicMystery,
+        Relic1,
+        Relic2,
+        Relic3,
+        Relic4,
+        Relic5
+    }
+```
+
+#### Actions
+
+```solidity
+enum Action {
+        Idle,
+        Move,
+        SetupCamp,
+        BreakDownCamp,
+        Dig,
+        Rest,
+        Help
+    }
+```
+
 ## Game Controller (HexplorationController.sol)
 
 ### Functions
 
 | **Name** | **Description** |
 | -------- | --------------- |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
-|          |                 |
+| [](#)    |                 |
+| [](#)    |                 |
+| [](#)    |                 |
+| [](#)    |                 |
+| [](#)    |                 |
+| [](#)    |                 |
+| [](#)    |                 |
+| [](#)    |                 |
 
 #### methodName
 
