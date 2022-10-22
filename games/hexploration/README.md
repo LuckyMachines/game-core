@@ -16,6 +16,14 @@ or
 
 # Documentation
 
+## Getting Started:
+
+All frontend interactions will potentially interact with three contracts:
+
+- [Game Summary](#game-summary-gamesummarysol): Various summaries of current game state. These are all view functions and can be called freely at no cost.
+- [Game Controller](#game-controller-hexplorationcontrollersol): Players submit game moves through this contract.
+- [Game Events](#game-events-gameeventssol): All game events are emitted here. Subscribe to any events from this contract.
+
 ## Deployed Contracts:
 
 Deployed contract addresses can be found in games/hexploration/deployments.json
