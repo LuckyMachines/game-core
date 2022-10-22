@@ -28,32 +28,32 @@ A contract with all view functions that return summaries of current game state. 
 
 | **Name**                                      | **Description**                          | **Caller** |
 | --------------------------------------------- | ---------------------------------------- | ---------- |
-| [activeZones](#activezones)                   |                                          | Public     |
-| [allPlayerLocations](#allplayerlocations)     |                                          | Public     |
+| [activeZones](#activezones)                   | All zones that have been revealed        | Public     |
+| [allPlayerLocations](#allplayerlocations)     | Locations of all players in the game     | Public     |
 | [boardSize](#boardsize)                       | The size of the game board (rows x cols) | Public     |
-| [canDigAtZone](#candigatzone)                 |                                          | Public     |
-| [currentGameplayQueue](#currentgameplayqueue) |                                          | Public     |
-| [currentPhase](#currentphase)                 |                                          | Public     |
-| [getAvailableGames](#getavailablegames)       |                                          | Public     |
-| [landingSite](#landingsite)                   |                                          | Public     |
-| [lastDayPhaseEvents](#lastdayphaseevents)     |                                          | Public     |
-| [lastPlayerActions](#lastplayeractions)       |                                          | Public     |
-| [totalPlayers](#totalplayers)                 |                                          | Public     |
+| [canDigAtZone](#candigatzone)                 | Check if digging is available            | Public     |
+| [currentGameplayQueue](#currentgameplayqueue) | The ID of the current gameplay queue     | Public     |
+| [currentPhase](#currentphase)                 | The current game phase (Day / Night)     | Public     |
+| [getAvailableGames](#getavailablegames)       | All available open games                 | Public     |
+| [landingSite](#landingsite)                   | The landing site for a given game        | Public     |
+| [lastDayPhaseEvents](#lastdayphaseevents)     | Summary of the latest day phase events   | Public     |
+| [lastPlayerActions](#lastplayeractions)       | Summary of the latest player actions     | Public     |
+| [totalPlayers](#totalplayers)                 | Total players registered for a game      | Public     |
 
 ### Player Summary Functions
 
-| **Name**                                      | **Description** | **Caller** |
-| --------------------------------------------- | --------------- | ---------- |
-| [getPlayerID](#getplayerid)                   |                 | Public     |
-| [isActive](#isactive)                         |                 | Public     |
-| [isRegistered](#isregistered)                 |                 | Public     |
-| [activeAction](#activeaction)                 |                 | Player     |
-| [activeInventory](#activeinventory)           |                 | Player     |
-| [currentHandInventory](#currenthandinventory) |                 | Player     |
-| [currentLocation](#currentlocation)           |                 | Player     |
-| [currentPlayerStats](#currentplayerstats)     |                 | Player     |
-| [inactiveInventory](#inactiveinventory)       |                 | Player     |
-| [isAtCampsite](#isatcampsite)                 |                 | Player     |
+| **Name**                                      | **Description**                               | **Caller** |
+| --------------------------------------------- | --------------------------------------------- | ---------- |
+| [getPlayerID](#getplayerid)                   | The ID of a given player used in game         | Public     |
+| [isActive](#isactive)                         | Check if player is active in game             | Public     |
+| [isRegistered](#isregistered)                 | Check if player is registered for a game      | Public     |
+| [activeAction](#activeaction)                 | Latest action taken by player                 | Player     |
+| [activeInventory](#activeinventory)           | Active inventory on player card               | Player     |
+| [currentHandInventory](#currenthandinventory) | Items equipped to left & right hands          | Player     |
+| [currentLocation](#currentlocation)           | Current location of player                    | Player     |
+| [currentPlayerStats](#currentplayerstats)     | Current player attributes                     | Player     |
+| [inactiveInventory](#inactiveinventory)       | Items held by player, but not active (in bag) | Player     |
+| [isAtCampsite](#isatcampsite)                 | Check if player is at a campsite              | Player     |
 
 ### Enumerations
 
@@ -92,7 +92,7 @@ enum Action {
 
 #### activeZones
 
-Description goes here
+All zones which have been revealed on the game board and their corresponding tiles.
 
 ```solidity
 activeZones(address gameBoardAddress, uint256 gameID)
@@ -115,7 +115,7 @@ activeZones(address gameBoardAddress, uint256 gameID)
 
 #### allPlayerLocations
 
-Description goes here
+The locations of all players on the game board.
 
 ```solidity
 allPlayerLocations(address gameBoardAddress, uint256 gameID)
@@ -138,7 +138,7 @@ allPlayerLocations(address gameBoardAddress, uint256 gameID)
 
 #### boardSize
 
-Description goes here
+The size of the board in terms of rows and columns that make up the hex grid. (TODO: show example)
 
 ```solidity
 boardSize(address gameBoardAddress)
@@ -159,7 +159,7 @@ boardSize(address gameBoardAddress)
 
 #### canDigAtZone
 
-Description goes here
+Checks if digging is available at a given play zone. This is a general method and does not take into account a player who possesses an Artifact and is thus unable to dig at any site until the Artifact is dropped off at the ship.
 
 ```solidity
 canDigAtZone(
@@ -179,11 +179,11 @@ canDigAtZone(
 
 ##### Return Values
 
-`(bool)diggingAllowed`: Whether or not digging is allowed at this site. This is a general method for all players and does not take into account a player who possesses an Artifact, and is thus unable to dig at any site until the Artifact is dropped off at the ship.
+`(bool)diggingAllowed`: Whether or not digging is allowed at this site.
 
 #### currentGameplayQueue
 
-Description goes here
+The current queue ID with player actions for the current turn. This queue ID gets updated at each new game phase (day / night).
 
 ```solidity
 currentGameplayQueue(address gameBoardAddress, uint256 gameID)
@@ -200,11 +200,11 @@ currentGameplayQueue(address gameBoardAddress, uint256 gameID)
 
 ##### Return Values
 
-`(uint256)queueID`: The current queue ID with player actions for the current turn. This queue ID gets updated at each new game phase (day / night).
+`(uint256)queueID`: The current queue ID.
 
 #### currentPhase
 
-Description goes here
+The current game phase, either Night or Day.
 
 ```solidity
 currentPhase(address gameBoardAddress, uint256 gameID)
@@ -221,11 +221,11 @@ currentPhase(address gameBoardAddress, uint256 gameID)
 
 ##### Return Values
 
-`(string)phase`: Current game phase, i.e. day or night.
+`(string)phase`: Current game phase.
 
 #### getAvailableGames
 
-Description goes here
+Returns a list of all open games that can be joined by a player. Once a game is full, it will not show up in this list any more.
 
 ```solidity
 getAvailableGames(
@@ -278,7 +278,7 @@ landingSite(address gameBoardAddress, uint256 gameID)
 
 #### lastDayPhaseEvents
 
-Description goes here
+A summary of all events that occurred during the latest day events. These return the outcomes of daily events where all players receive either an Ambush or Event card.
 
 ```solidity
 lastDayPhaseEvents(address gameBoardAddress, uint256 gameID)
@@ -316,7 +316,7 @@ lastDayPhaseEvents(address gameBoardAddress, uint256 gameID)
 
 #### lastPlayerActions
 
-Description goes here
+A summary of the latest actions taken by the player and their outcomes where necessary.
 
 ```solidity
 lastPlayerActions(address gameBoardAddress, uint256 gameID)
@@ -455,7 +455,7 @@ isRegistered(
 
 #### activeAction
 
-Description goes here
+The latest action submitted by the player.
 
 ```solidity
 activeAction(address gameBoardAddress, uint256 gameID)
@@ -476,7 +476,7 @@ activeAction(address gameBoardAddress, uint256 gameID)
 
 #### activeInventory
 
-This represents a player's active inventory: all of the tokens active on their player card.
+This represents a player's active inventory, i.e. all of the tokens active on their player card.
 
 ```solidity
 activeInventory(address gameBoardAddress, uint256 gameID)
@@ -499,15 +499,15 @@ activeInventory(address gameBoardAddress, uint256 gameID)
 
 ##### Return Values
 
-`(string)artifact`:
+`(string)artifact`: The artifact held by the player or an empty string if none.
 
-`(string)status`:
+`(string)status`: Any special player status or an empty string if none.
 
-`(string)relic`:
+`(string)relic`: The relic held by a player or an empty string if none.
 
-`(bool)shield`:
+`(bool)shield`: Whether or not the player is equipped with a shield.
 
-`(bool)campsite`:
+`(bool)campsite`: Whether or not the player has a campsite in their inventory.
 
 #### currentHandInventory
 
