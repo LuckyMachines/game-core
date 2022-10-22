@@ -26,7 +26,9 @@ All frontend interactions will potentially interact with three contracts:
 
 ## Deployed Contracts:
 
-Deployed contract addresses can be found in games/hexploration/deployments.json
+Deployed contract addresses can be found in [games/hexploration/deployments.json](https://github.com/LuckyMachines/game-core/blob/docs/games/hexploration/deployments.json)
+
+---
 
 ## Game Summary (GameSummary.sol)
 
@@ -599,15 +601,19 @@ isAtCampsite(address gameBoardAddress, uint256 gameID)
 
 `(bool)atCampsite`: Whether or not the player is currently at a campsite.
 
+---
+
 ## Game Controller (HexplorationController.sol)
+
+A contract with all of the interactions required by the player to [create](#requestnewgame), [join](#registerforgame), and [play](#submitaction) Hexploration. This contract is generally meant to be interacted with directly by the player, so these methods should always be called from a player's connected wallet. The exception is in [requesting a new game](#requestnewgame), which is a function callable by anyone, so it can potentially be called via a private provider.
 
 ### Functions
 
-| **Name**                            | **Description** |
-| ----------------------------------- | --------------- |
-| [registerForGame](#registerforgame) |                 |
-| [requestNewGame](#requestnewgame)   |                 |
-| [submitAction](#submitaction)       |                 |
+| **Name**                            | **Description**                          |
+| ----------------------------------- | ---------------------------------------- |
+| [registerForGame](#registerforgame) | Register for an open game                |
+| [requestNewGame](#requestnewgame)   | Request new game with player limit 1 - 4 |
+| [submitAction](#submitaction)       | Submit player action for a given game    |
 
 #### registerForGame
 
@@ -684,6 +690,8 @@ Action options are passed as an array of strings. For single values pass an arra
 - **Help**: The ID of the player to help / revive, e,g, `["3"]`.
 
 - **Rest**: The attribute to rest and improve. Can choose `["Movement"]`, `["Agility"]`, or `["Dexterity"]`.
+
+---
 
 ## Game Events (GameEvents.sol)
 
