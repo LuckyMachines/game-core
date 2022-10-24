@@ -44,6 +44,7 @@ A contract with all view functions that return summaries of current game state. 
 | [canDigAtZone](#candigatzone)                 | Check if digging is available            | Public     |
 | [currentGameplayQueue](#currentgameplayqueue) | The ID of the current gameplay queue     | Public     |
 | [currentPhase](#currentphase)                 | The current game phase (Day / Night)     | Public     |
+| [gameStarted](#gamestarted)                   | Check if a game has started              | Public     |
 | [getAvailableGames](#getavailablegames)       | All available open games                 | Public     |
 | [landingSite](#landingsite)                   | The landing site for a given game        | Public     |
 | [lastDayPhaseEvents](#lastdayphaseevents)     | Summary of the latest day phase events   | Public     |
@@ -197,6 +198,27 @@ currentPhase(address gameBoardAddress, uint256 gameID)
 ##### Return Values
 
 `(string)phase`: Current game phase.
+
+#### gameStarted
+
+Returns whether or not a game has started.
+
+```solidity
+gameStarted(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (bool gameHasStarted)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(bool)gameHasStarted`: Whether or not the specified game has started.
 
 #### getAvailableGames
 
