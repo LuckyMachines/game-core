@@ -72,9 +72,13 @@ All zones which have been revealed on the game board and their corresponding til
 
 ```solidity
 activeZones(address gameBoardAddress, uint256 gameID)
-    public
-    view
-    returns (string[] memory zones, uint16[] memory tiles)
+        public
+        view
+        returns (
+            string[] memory zones,
+            uint16[] memory tiles,
+            bool[] memory campsites
+        )
 ```
 
 ##### Parameters
@@ -88,6 +92,8 @@ activeZones(address gameBoardAddress, uint256 gameID)
 `(string[])zones`: An array of all zones which have been revealed on the game board. Zones are labeled as a string in the form "x,y", representing the coordinates on the game board grid. (TODO: show sample grid)
 
 `(uint16[])tiles`: An array of all revealed zone tiles. Position corresponds with position of zones, e.g. tiles[1] will be the tile associated with zones[1]. See [Tile enumeration](#tiles).
+
+`(bool[])campsites`: An array of whether or not a campsite is setup at each zone.
 
 #### allPlayerLocations
 
