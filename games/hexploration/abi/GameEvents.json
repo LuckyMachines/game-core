@@ -74,6 +74,25 @@
         "internalType": "uint256",
         "name": "timeStamp",
         "type": "uint256"
+      }
+    ],
+    "name": "GameOver",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timeStamp",
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -362,6 +381,19 @@
       }
     ],
     "name": "emitEndGameStarted",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "name": "emitGameOver",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

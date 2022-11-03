@@ -49,22 +49,24 @@ A contract with all view functions that return summaries of current game state. 
 | [landingSite](#landingsite)                   | The landing site for a given game        | Public     |
 | [lastDayPhaseEvents](#lastdayphaseevents)     | Summary of the latest day phase events   | Public     |
 | [lastPlayerActions](#lastplayeractions)       | Summary of the latest player actions     | Public     |
+| [recoveredArtifacts](#recoveredartifacts)     | List of all recovered artifacts          | Public     |
 | [totalPlayers](#totalplayers)                 | Total players registered for a game      | Public     |
 
 ### Individual Player Summary Functions
 
-| **Name**                                      | **Description**                               | **Caller** |
-| --------------------------------------------- | --------------------------------------------- | ---------- |
-| [getPlayerID](#getplayerid)                   | The ID of a given player used in game         | Public     |
-| [isActive](#isactive)                         | Check if player is active in game             | Public     |
-| [isRegistered](#isregistered)                 | Check if player is registered for a game      | Public     |
-| [activeAction](#activeaction)                 | Latest action taken by player                 | Player     |
-| [activeInventory](#activeinventory)           | Active inventory on player card               | Player     |
-| [currentHandInventory](#currenthandinventory) | Items equipped to left & right hands          | Player     |
-| [currentLocation](#currentlocation)           | Current location of player                    | Player     |
-| [currentPlayerStats](#currentplayerstats)     | Current player attributes                     | Player     |
-| [inactiveInventory](#inactiveinventory)       | Items held by player, but not active (in bag) | Player     |
-| [isAtCampsite](#isatcampsite)                 | Check if player is at a campsite              | Player     |
+| **Name**                                              | **Description**                               | **Caller** |
+| ----------------------------------------------------- | --------------------------------------------- | ---------- |
+| [getPlayerID](#getplayerid)                           | The ID of a given player used in game         | Public     |
+| [isActive](#isactive)                                 | Check if player is active in game             | Public     |
+| [isRegistered](#isregistered)                         | Check if player is registered for a game      | Public     |
+| [activeAction](#activeaction)                         | Latest action taken by player                 | Player     |
+| [activeInventory](#activeinventory)                   | Active inventory on player card               | Player     |
+| [currentHandInventory](#currenthandinventory)         | Items equipped to left & right hands          | Player     |
+| [currentLocation](#currentlocation)                   | Current location of player                    | Player     |
+| [currentPlayerStats](#currentplayerstats)             | Current player attributes                     | Player     |
+| [inactiveInventory](#inactiveinventory)               | Items held by player, but not active (in bag) | Player     |
+| [isAtCampsite](#isatcampsite)                         | Check if player is at a campsite              | Player     |
+| [playerRecoveredArtifacts](#playerrecoveredartifacts) | List of all artifacts recovered by player     | Player     |
 
 #### activeZones
 
@@ -358,6 +360,27 @@ lastPlayerActions(address gameBoardAddress, uint256 gameID)
 
 `(int8[3])statUpdates`: An array of player attribute adjustments with a representation of `[movement adjustment, agility adjustment, dexterity adjustment]`. Each value can be a positive or negative integer. A positive value will increase a particular attribute up to the maximum allowed and negative will reduce a particular attribute down to a minimum of 0.
 
+#### recoveredArtifacts
+
+A list of all artifacts recovered in a given game.
+
+```solidity
+recoveredArtifacts(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (string[] memory artifacts)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(string[])artifacts`: A list of all artifacts recovered (returned to ship).
+
 #### totalPlayers
 
 The total number of players registered for a given game.
@@ -629,6 +652,27 @@ isAtCampsite(address gameBoardAddress, uint256 gameID)
 
 `(bool)atCampsite`: Whether or not the player is currently at a campsite.
 
+#### playerRecoveredArtifacts
+
+A list of artifacts that have been recovered by the player in a given game.
+
+```solidity
+playerRecoveredArtifacts(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (string[] memory artifacts)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(string[])artifacts`: A list of all artifacts recovered (returned to ship) by the player.
+
 ---
 
 ## Game Controller (HexplorationController.sol)
@@ -729,6 +773,7 @@ Action options are passed as an array of strings. For single values pass an arra
 | ----------------------------------------------- | ---------------------------------------- |
 | [ActionSubmit](#actionsubmit)                   | A player action was submitted            |
 | [EndGameStarted](#endgamestarted)               | The end game has started                 |
+| [GameOver](#gameover)                           | All players defeated, gameplay has ended |
 | [GamePhaseChange](#gamephasechange)             | Game phase has changed (night / day)     |
 | [GameRegistration](#gameregistration)           | A player registered for the game         |
 | [GameStart](#gamestart)                         | The game has started                     |
@@ -779,6 +824,20 @@ event EndGameStarted(
 `(uint256)timeStamp`: The time the end game was started.
 
 `(string)scenario`: The end game scenario to take place.
+
+#### GameOver
+
+This event is emitted when all players have been defeated and gameplay has ended.
+
+```solidity
+event GameOver(uint256 indexed gameID, uint256 timeStamp)
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game that has ended.
+
+`(uint256)timeStamp`: The time the end game ended.
 
 #### GamePhaseChange
 
