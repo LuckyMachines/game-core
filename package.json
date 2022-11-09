@@ -1,9 +1,10 @@
 {
   "name": "@luckymachines/game-core",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Components for building on chain game backends.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "import-abis": "node local/import-hexploration-abis.js"
   },
   "repository": {
     "type": "git",
