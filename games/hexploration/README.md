@@ -909,7 +909,7 @@ This event is emitted when the game ends.
 
 ##### Parameters
 
-`(uint256)gameID`: The game in which the turn processing phase started.
+`(uint256)gameID`: The game that ended.
 
 `(uint256)timeStamp`: The time the action was submitted.
 
