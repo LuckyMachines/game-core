@@ -781,6 +781,8 @@ Action options are passed as an array of strings. For single values pass an arra
 | [PlayerIdleKick](#playeridlekick)               | A player was kicked due to idleness      |
 | [ProcessingPhaseChange](#processingphasechange) | The turn processing is in a new phase    |
 | [TurnProcessingStart](#turnprocessingstart)     | The first phase of turn processing began |
+| [GameOver](#gameover)                           | When the game ends                       |
+
 
 #### ActionSubmit
 
@@ -955,6 +957,22 @@ event TurnProcessingStart(uint256 indexed gameID, uint256 timeStamp)
 
 `(uint256)timeStamp`: The time the action was submitted.
 
+
+#### GameOver
+
+This event is emitted when the game ends.
+
+```solidity
+    event GameOver(uint256 indexed gameID, uint256 timeStamp);
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game that ended.
+
+`(uint256)timeStamp`: The time the action was submitted.
+
+    
 ---
 
 ## Enumerations
