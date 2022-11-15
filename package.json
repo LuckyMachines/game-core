@@ -4,7 +4,8 @@
   "description": "Components for building on chain game backends.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "import-abis": "node local/import-hexploration-abis.js"
+    "import-abis": "node local/import-hexploration-abis.js",
+    "chainlink-addresses": "node local/chainlink-addresses.js"
   },
   "repository": {
     "type": "git",
