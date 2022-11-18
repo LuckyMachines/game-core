@@ -42,6 +42,7 @@ A contract with all view functions that return summaries of current game state. 
 | [allPlayerLocations](#allplayerlocations)     | Locations of all players in the game     | Public     |
 | [boardSize](#boardsize)                       | The size of the game board (rows x cols) | Public     |
 | [canDigAtZone](#candigatzone)                 | Check if digging is available            | Public     |
+| [currentDay](#currentday)                     | The current day of a given game          | Public     |
 | [currentGameplayQueue](#currentgameplayqueue) | The ID of the current gameplay queue     | Public     |
 | [currentPhase](#currentphase)                 | The current game phase (Day / Night)     | Public     |
 | [gameStarted](#gamestarted)                   | Check if a game has started              | Public     |
@@ -164,6 +165,26 @@ canDigAtZone(
 ##### Return Values
 
 `(bool)diggingAllowed`: Whether or not digging is allowed at this site.
+
+#### currentDay
+
+Returns the current day for a given game. Each day consists of a Day phase and Night phase.
+
+```solidity
+currentDay(address gameBoardAddress, uint256 gameID)
+        public
+        returns (uint256 day)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(uint256)day`: The current day of the game.
 
 #### currentGameplayQueue
 
@@ -513,7 +534,9 @@ activeInventory(address gameBoardAddress, uint256 gameID)
             string memory status,
             string memory relic,
             bool shield,
-            bool campsite
+            bool campsite,
+            string memory leftHandItem,
+            string memory rightHandItem
         )
 ```
 
@@ -534,6 +557,10 @@ activeInventory(address gameBoardAddress, uint256 gameID)
 `(bool)shield`: Whether or not the player is equipped with a shield.
 
 `(bool)campsite`: Whether or not the player has a campsite in their inventory.
+
+`(string)leftHandItem`: The item equipped to the left hand or an empty string if none.
+
+`(string)rightHandItem`: The item equipped to the right hand or an empty string if none.
 
 #### currentHandInventory
 
@@ -783,7 +810,6 @@ Action options are passed as an array of strings. For single values pass an arra
 | [TurnProcessingStart](#turnprocessingstart)     | The first phase of turn processing began |
 | [GameOver](#gameover)                           | When the game ends                       |
 
-
 #### ActionSubmit
 
 This event is emitted each time a player submits a move.
@@ -957,7 +983,6 @@ event TurnProcessingStart(uint256 indexed gameID, uint256 timeStamp)
 
 `(uint256)timeStamp`: The time the action was submitted.
 
-
 #### GameOver
 
 This event is emitted when the game ends.
@@ -972,7 +997,6 @@ This event is emitted when the game ends.
 
 `(uint256)timeStamp`: The time the action was submitted.
 
-    
 ---
 
 ## Enumerations
