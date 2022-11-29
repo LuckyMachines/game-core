@@ -10,7 +10,8 @@ or
 
 ## Import ABIs
 
-    import SummaryABI from "@luckymachines/game-core/games/hexploration/abi/GameSummary.json";
+    import GameSummaryABI from "@luckymachines/game-core/games/hexploration/abi/GameSummary.json";
+    import PlayerSummaryABI from "@luckymachines/game-core/games/hexploration/abi/PlayerSummary.json";
     import ControllerABI from "@luckymachines/game-core/games/hexploration/abi/HexplorationController.json";
     import EventsABI from "@luckymachines/game-core/games/hexploration/abi/GameEvents.json";
 
@@ -20,9 +21,10 @@ or
 
 All frontend interactions will potentially interact with three contracts:
 
-- [Game Summary](#game-summary-gamesummarysol): Various summaries of current game state. These are all view functions and can be called freely at no cost.
 - [Game Controller](#game-controller-hexplorationcontrollersol): Players submit game moves through this contract.
 - [Game Events](#game-events-gameeventssol): All game events are emitted here. Subscribe to any events from this contract.
+- [Game Summary](#game-summary-gamesummarysol): Various summaries of current game state. These are all view functions and can be called freely at no cost.
+- [Player Summary](#player-summary-playersummarysol): Various summaries of current player state. These are all view functions and can be called freely at no cost.
 
 ## Deployed Contracts:
 
@@ -32,7 +34,7 @@ Deployed contract addresses can be found in [games/hexploration/deployments.json
 
 ## Game Summary (GameSummary.sol)
 
-A contract with all view functions that return summaries of current game state. Some methods are callable by anyone (designated as Public in the table below), others are designed to be called directly by the player (designated as Player in the table below). Player designated functions should always be called via the user's connected wallet to return specific information to their game. Public designated functions can be called from any source, including a private provider.
+A contract with all view functions that return summaries of current game state.
 
 ### Game Summary Functions
 
@@ -52,22 +54,6 @@ A contract with all view functions that return summaries of current game state. 
 | [lastPlayerActions](#lastplayeractions)       | Summary of the latest player actions     | Public     |
 | [recoveredArtifacts](#recoveredartifacts)     | List of all recovered artifacts          | Public     |
 | [totalPlayers](#totalplayers)                 | Total players registered for a game      | Public     |
-
-### Individual Player Summary Functions
-
-| **Name**                                              | **Description**                               | **Caller** |
-| ----------------------------------------------------- | --------------------------------------------- | ---------- |
-| [getPlayerID](#getplayerid)                           | The ID of a given player used in game         | Public     |
-| [isActive](#isactive)                                 | Check if player is active in game             | Public     |
-| [isRegistered](#isregistered)                         | Check if player is registered for a game      | Public     |
-| [activeAction](#activeaction)                         | Latest action taken by player                 | Player     |
-| [activeInventory](#activeinventory)                   | Active inventory on player card               | Player     |
-| [currentHandInventory](#currenthandinventory)         | Items equipped to left & right hands          | Player     |
-| [currentLocation](#currentlocation)                   | Current location of player                    | Player     |
-| [currentPlayerStats](#currentplayerstats)             | Current player attributes                     | Player     |
-| [inactiveInventory](#inactiveinventory)               | Items held by player, but not active (in bag) | Player     |
-| [isAtCampsite](#isatcampsite)                         | Check if player is at a campsite              | Player     |
-| [playerRecoveredArtifacts](#playerrecoveredartifacts) | List of all artifacts recovered by player     | Player     |
 
 #### activeZones
 
@@ -423,11 +409,39 @@ totalPlayers(address gameBoardAddress, uint256 gameID)
 
 `(uint256)numPlayers`: How many players are registered for the specified game.
 
+---
+
+## Player Summary (PlayerSummary.sol)
+
+A contract with all view functions that return summaries of current player state. All methods are callable directly by the player or by anyone if the player ID or player address (depending on the method) is passed as the last parameter. When not passing the Player ID, functions must be called directly from the player wallet.
+
+### Player Summary Functions
+
+| **Name**                                              | **Description**                               | **Caller**      |
+| ----------------------------------------------------- | --------------------------------------------- | --------------- |
+| [getPlayerID](#getplayerid)                           | The ID of a given player used in game         | Public / Player |
+| [isActive](#isactive)                                 | Check if player is active in game             | Public / Player |
+| [isRegistered](#isregistered)                         | Check if player is registered for a game      | Public / Player |
+| [activeAction](#activeaction)                         | Latest action taken by player                 | Public / Player |
+| [activeInventory](#activeinventory)                   | Active inventory on player card               | Public / Player |
+| [availableMovement](#availablemovement)               | How many spaces a player can move             | Public / Player |
+| [currentHandInventory](#currenthandinventory)         | Items equipped to left & right hands          | Public / Player |
+| [currentLocation](#currentlocation)                   | Current location of player                    | Public / Player |
+| [currentPlayerStats](#currentplayerstats)             | Current player attributes                     | Public / Player |
+| [inactiveInventory](#inactiveinventory)               | Items held by player, but not active (in bag) | Public / Player |
+| [isAtCampsite](#isatcampsite)                         | Check if player is at a campsite              | Public / Player |
+| [playerRecoveredArtifacts](#playerrecoveredartifacts) | List of all artifacts recovered by player     | Public / Player |
+
 #### getPlayerID
 
 Returns a player ID from a specified wallet address.
 
 ```solidity
+getPlayerID(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (uint256 playerID)
+
 getPlayerID(
         address gameBoardAddress,
         uint256 gameID,
@@ -452,6 +466,11 @@ getPlayerID(
 Returns whether or not a given player is active in a given game. Players might get kicked from idleness, which would put them into this inactive state.
 
 ```solidity
+isActive(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (bool playerIsActive)
+
 isActive(
         address gameBoardAddress,
         uint256 gameID,
@@ -483,6 +502,11 @@ isActive(
 Returns whether or not a player is registered for a given game. Players might be registered, but inactive, so this is only valuable to learn who originally joined a game, not necessarily who is currently active. See [isActive](#isactive).
 
 ```solidity
+isRegistered(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (bool playerIsRegistered)
+
 isRegistered(
         address gameBoardAddress,
         uint256 gameID,
@@ -509,6 +533,12 @@ activeAction(address gameBoardAddress, uint256 gameID)
         public
         view
         returns (string memory action)
+
+activeAction(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    ) public view returns (string memory action)
 ```
 
 ##### Parameters
@@ -527,6 +557,23 @@ This represents a player's active inventory, i.e. all of the tokens active on th
 
 ```solidity
 activeInventory(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (
+            string memory artifact,
+            string memory status,
+            string memory relic,
+            bool shield,
+            bool campsite,
+            string memory leftHandItem,
+            string memory rightHandItem
+        )
+
+activeInventory(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    )
         public
         view
         returns (
@@ -562,12 +609,48 @@ activeInventory(address gameBoardAddress, uint256 gameID)
 
 `(string)rightHandItem`: The item equipped to the right hand or an empty string if none.
 
+#### availableMovement
+
+Returns the total number of spaces a player can move under the current conditions. Time of day and terrain affect the outcome of this.
+
+```solidity
+availableMovement(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (uint8 movement)
+
+availableMovement(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    ) public view returns (uint8 movement)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(uint8)movement`: How many spaces a player can move on this turn.
+
 #### currentHandInventory
 
 The items equipped in the player's hands, as represented on the player card.
 
 ```solidity
 currentHandInventory(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (string memory leftHandItem, string memory rightHandItem)
+
+currentHandInventory(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    )
         public
         view
         returns (string memory leftHandItem, string memory rightHandItem)
@@ -594,6 +677,12 @@ currentLocation(address gameBoardAddress, uint256 gameID)
         public
         view
         returns (string memory location)
+
+currentLocation(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    ) public view returns (string memory location)
 ```
 
 ##### Parameters
@@ -612,6 +701,19 @@ The current values of all player attributes: movement, agility, and dexterity.
 
 ```solidity
 currentPlayerStats(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (
+            uint8 movement,
+            uint8 agility,
+            uint8 dexterity
+        )
+
+currentPlayerStats(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    )
         public
         view
         returns (
@@ -644,6 +746,15 @@ inactiveInventory(address gameBoardAddress, uint256 gameID)
         public
         view
         returns (string[] memory itemTypes, uint256[] memory itemBalances)
+
+inactiveInventory(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    )
+        public
+        view
+        returns (string[] memory itemTypes, uint256[] memory itemBalances)
 ```
 
 ##### Parameters
@@ -667,6 +778,12 @@ isAtCampsite(address gameBoardAddress, uint256 gameID)
         public
         view
         returns (bool atCampsite)
+
+isAtCampsite(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    ) public view returns (bool atCampsite)
 ```
 
 ##### Parameters
@@ -688,6 +805,12 @@ playerRecoveredArtifacts(address gameBoardAddress, uint256 gameID)
         public
         view
         returns (string[] memory artifacts)
+
+playerRecoveredArtifacts(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    ) public view returns (string[] memory artifacts)
 ```
 
 ##### Parameters
@@ -1043,6 +1166,7 @@ enum ProcessingPhase {
         Processing,
         PlayThrough,
         Processed,
-        Closed
+        Closed,
+        Failed
     }
 ```
