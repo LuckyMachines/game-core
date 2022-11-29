@@ -38,22 +38,24 @@ A contract with all view functions that return summaries of current game state.
 
 ### Game Summary Functions
 
-| **Name**                                      | **Description**                          | **Caller** |
-| --------------------------------------------- | ---------------------------------------- | ---------- |
-| [activeZones](#activezones)                   | All zones that have been revealed        | Public     |
-| [allPlayerLocations](#allplayerlocations)     | Locations of all players in the game     | Public     |
-| [boardSize](#boardsize)                       | The size of the game board (rows x cols) | Public     |
-| [canDigAtZone](#candigatzone)                 | Check if digging is available            | Public     |
-| [currentDay](#currentday)                     | The current day of a given game          | Public     |
-| [currentGameplayQueue](#currentgameplayqueue) | The ID of the current gameplay queue     | Public     |
-| [currentPhase](#currentphase)                 | The current game phase (Day / Night)     | Public     |
-| [gameStarted](#gamestarted)                   | Check if a game has started              | Public     |
-| [getAvailableGames](#getavailablegames)       | All available open games                 | Public     |
-| [landingSite](#landingsite)                   | The landing site for a given game        | Public     |
-| [lastDayPhaseEvents](#lastdayphaseevents)     | Summary of the latest day phase events   | Public     |
-| [lastPlayerActions](#lastplayeractions)       | Summary of the latest player actions     | Public     |
-| [recoveredArtifacts](#recoveredartifacts)     | List of all recovered artifacts          | Public     |
-| [totalPlayers](#totalplayers)                 | Total players registered for a game      | Public     |
+| **Name**                                                      | **Description**                          | **Caller** |
+| ------------------------------------------------------------- | ---------------------------------------- | ---------- |
+| [activeZones](#activezones)                                   | All zones that have been revealed        | Public     |
+| [allPlayerActiveInventories](#allplayeractiveinventories)     | All players active inventories           | Public     |
+| [allPlayerInactiveInventories](#allplayerinactiveinventories) | All players inactive inventories         | Public     |
+| [allPlayerLocations](#allplayerlocations)                     | Locations of all players in the game     | Public     |
+| [boardSize](#boardsize)                                       | The size of the game board (rows x cols) | Public     |
+| [canDigAtZone](#candigatzone)                                 | Check if digging is available            | Public     |
+| [currentDay](#currentday)                                     | The current day of a given game          | Public     |
+| [currentGameplayQueue](#currentgameplayqueue)                 | The ID of the current gameplay queue     | Public     |
+| [currentPhase](#currentphase)                                 | The current game phase (Day / Night)     | Public     |
+| [gameStarted](#gamestarted)                                   | Check if a game has started              | Public     |
+| [getAvailableGames](#getavailablegames)                       | All available open games                 | Public     |
+| [landingSite](#landingsite)                                   | The landing site for a given game        | Public     |
+| [lastDayPhaseEvents](#lastdayphaseevents)                     | Summary of the latest day phase events   | Public     |
+| [lastPlayerActions](#lastplayeractions)                       | Summary of the latest player actions     | Public     |
+| [recoveredArtifacts](#recoveredartifacts)                     | List of all recovered artifacts          | Public     |
+| [totalPlayers](#totalplayers)                                 | Total players registered for a game      | Public     |
 
 #### activeZones
 
@@ -83,6 +85,85 @@ activeZones(address gameBoardAddress, uint256 gameID)
 `(uint16[])tiles`: An array of all revealed zone tiles. Position corresponds with position of zones, e.g. tiles[1] will be the tile associated with zones[1]. See [Tile enumeration](#tiles).
 
 `(bool[])campsites`: An array of whether or not a campsite is setup at each zone.
+
+#### allPlayerActiveInventories
+
+The active inventories of all players in the game
+
+```solidity
+allPlayerActiveInventories(
+        address gameBoardAddress,
+        uint256 gameID
+    )
+        public
+        view
+        returns (
+            uint256[] memory playerIDs,
+            string[] memory artifacts,
+            string[] memory statuses,
+            string[] memory relics,
+            bool[] memory shields,
+            bool[] memory campsites,
+            string[] memory leftHandItems,
+            string[] memory rightHandItems
+        )
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(uint256[])playerIDs`: An array of player IDs of all players registered for game.
+
+`(string[])artifacts`: The artifact held by each player or an empty string if none.
+
+`(string[])statuses`: Any special player statuses or an empty string if none.
+
+`(string[])relics`: The relic held by each player or an empty string if none.
+
+`(bool[])shields`: Whether or not each player is equipped with a shield.
+
+`(bool[])campsites`: Whether or not each player has a campsite in their inventory.
+
+`(string[])leftHandItems`: The item equipped to each player's left hand or an empty string if none.
+
+`(string[])rightHandItems`: The item equipped to each player's right hand or an empty string if none.
+
+#### allPlayerInactiveInventories
+
+The inactive inventories of all players in the game.
+
+```solidity
+allPlayerInactiveInventories(
+        address gameBoardAddress,
+        uint256 gameID
+    )
+        public
+        view
+        returns (
+            uint256[] memory playerIDs,
+            string[][] memory itemTypes,
+            uint256[][] memory itemBalances
+        )
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(uint256[])playerIDs`: An array of player IDs of all players registered for game.
+
+`(string[][])itemTypes`: An array of item types for each player.
+
+`(uint256[][])itemBalances`: An array of player balances of items corresponding to itemTypes for each player.
 
 #### allPlayerLocations
 
