@@ -11,7 +11,7 @@ contract HexGrid is GameBoard {
 
     string[] public zoneAliases;
 
-    uint256 public constant DEFAULT_GAME_ID = 999999999999999;
+    uint256 public constant DEFAULT_GAME_ID = 0;
 
     constructor(
         address adminAddress,
