@@ -1000,19 +1000,18 @@ Action options are passed as an array of strings. For single values pass an arra
 
 ### Events
 
-| **Name**                                        | **Description**                          |
-| ----------------------------------------------- | ---------------------------------------- |
-| [ActionSubmit](#actionsubmit)                   | A player action was submitted            |
-| [EndGameStarted](#endgamestarted)               | The end game has started                 |
-| [GameOver](#gameover)                           | All players defeated, gameplay has ended |
-| [GamePhaseChange](#gamephasechange)             | Game phase has changed (night / day)     |
-| [GameRegistration](#gameregistration)           | A player registered for the game         |
-| [GameStart](#gamestart)                         | The game has started                     |
-| [LandingSiteSet](#landingsiteset)               | The landing site has been chosen         |
-| [PlayerIdleKick](#playeridlekick)               | A player was kicked due to idleness      |
-| [ProcessingPhaseChange](#processingphasechange) | The turn processing is in a new phase    |
-| [TurnProcessingStart](#turnprocessingstart)     | The first phase of turn processing began |
-| [GameOver](#gameover)                           | When the game ends                       |
+| **Name**                                        | **Description**                              |
+| ----------------------------------------------- | -------------------------------------------- |
+| [ActionSubmit](#actionsubmit)                   | A player action was submitted                |
+| [EndGameStarted](#endgamestarted)               | The end game has started                     |
+| [GameOver](#gameover)                           | All players defeated or successfully escaped |
+| [GamePhaseChange](#gamephasechange)             | Game phase has changed (night / day)         |
+| [GameRegistration](#gameregistration)           | A player registered for the game             |
+| [GameStart](#gamestart)                         | The game has started                         |
+| [LandingSiteSet](#landingsiteset)               | The landing site has been chosen             |
+| [PlayerIdleKick](#playeridlekick)               | A player was kicked due to idleness          |
+| [ProcessingPhaseChange](#processingphasechange) | The turn processing is in a new phase        |
+| [TurnProcessingStart](#turnprocessingstart)     | The first phase of turn processing began     |
 
 #### ActionSubmit
 
