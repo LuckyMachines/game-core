@@ -1186,20 +1186,6 @@ event TurnProcessingStart(uint256 indexed gameID, uint256 timeStamp)
 
 `(uint256)timeStamp`: The time the action was submitted.
 
-#### GameOver
-
-This event is emitted when the game ends.
-
-```solidity
-    event GameOver(uint256 indexed gameID, uint256 timeStamp);
-```
-
-##### Parameters
-
-`(uint256)gameID`: The game that ended.
-
-`(uint256)timeStamp`: The time the action was submitted.
-
 ---
 
 ## Enumerations
