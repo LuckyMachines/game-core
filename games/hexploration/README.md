@@ -403,9 +403,9 @@ lastDayPhaseEvents(address gameBoardAddress, uint256 gameID)
 
 `(string[])cardResults`: An array of the descriptions of the result of each card drawn by each player during the day phase events.
 
-`(string[3])inventoryChanges`: The inventory changes that occur as a result of the card drawn. There are 3 values that get returned, `[item loss, item gain, hand loss]`, where item loss is an item that is removed from the player's inventory (if present), item gain is an item that is added to the player's inventory, and hand loss is either "Right" or "Left" to represent a player losing whatever item they have equipped in that particular hand. Any or all of these 3 array elements may be empty strings, which represents no action.
+`(string[3][])inventoryChanges`: The inventory changes that occur as a result of the card drawn. There are 3 values that get returned, `[item loss, item gain, hand loss]`, where item loss is an item that is removed from the player's inventory (if present), item gain is an item that is added to the player's inventory, and hand loss is either "Right" or "Left" to represent a player losing whatever item they have equipped in that particular hand. Any or all of these 3 array elements may be empty strings, which represents no action.
 
-`(int8[3])statUpdates`: An array of player attribute adjustments with a representation of `[movement adjustment, agility adjustment, dexterity adjustment]`. Each value can be a positive or negative integer. A positive value will increase a particular attribute up to the maximum allowed and negative will reduce a particular attribute down to a minimum of 0.
+`(int8[3][])statUpdates`: An array of player attribute adjustments with a representation of `[movement adjustment, agility adjustment, dexterity adjustment]`. Each value can be a positive or negative integer. A positive value will increase a particular attribute up to the maximum allowed and negative will reduce a particular attribute down to a minimum of 0.
 
 #### lastPlayerActions
 
@@ -415,15 +415,7 @@ A summary of the latest actions taken by the player and their outcomes where nec
 lastPlayerActions(address gameBoardAddress, uint256 gameID)
         public
         view
-        returns (
-            uint256[] memory playerIDs,
-            string[] memory activeActionCardTypes,
-            string[] memory activeActionCardsDrawn,
-            uint8[] memory currentActiveActions,
-            string[] memory activeActionCardResults,
-            string[3][] memory activeActionCardInventoryChanges,
-            int8[3][] memory activeActionStatUpdates
-        )
+        returns (EventSummary[] memory playerActions)
 ```
 
 ##### Parameters
@@ -434,19 +426,9 @@ lastPlayerActions(address gameBoardAddress, uint256 gameID)
 
 ##### Return Values
 
-`(uint256[])playerIDs`: An array of player IDs of all players registered for the game
+`(EventSummary[])playerActions`: An array of [EventSummary](#event-summary) structs.
 
-`(string[])activeActionCardTypes`: An array of card types drawn by each player during the player action processing phase (if any). Cards are drawn as a result of a dig and will be of type Ambush or Treasure.
-
-`(string[])activeActionCardsDrawn`: An array of the titles of cards drawn by each player during the player action processing phase.
-
-`(uint8[])currentActiveActions`: An array of actions being performed by each player during the player action processing phase. See [Action enumeration](#actions).
-
-`(string[])cardResults`: An array of the descriptions of the result of each card drawn by each player during the player action processing phase.
-
-`(string[3])inventoryChanges`: The inventory changes that occur as a result of the card drawn. There are 3 values that get returned, `[item loss, item gain, hand loss]`, where item loss is an item that is removed from the player's inventory (if present), item gain is an item that is added to the player's inventory, and hand loss is either "Right" or "Left" to represent a player losing whatever item they have equipped in that particular hand. Any or all of these 3 array elements may be empty strings, which represents no action.
-
-`(int8[3])statUpdates`: An array of player attribute adjustments with a representation of `[movement adjustment, agility adjustment, dexterity adjustment]`. Each value can be a positive or negative integer. A positive value will increase a particular attribute up to the maximum allowed and negative will reduce a particular attribute down to a minimum of 0.
+##### EventSummary
 
 #### recoveredArtifacts
 
@@ -1250,3 +1232,36 @@ enum ProcessingPhase {
         Failed
     }
 ```
+
+## Structs
+
+### Event Summary
+
+```solidity
+struct EventSummary {
+        uint256 playerID;
+        string cardType;
+        string cardDrawn;
+        uint8 currentAction;
+        string cardResult;
+        string[3] inventoryChanges;
+        int8[3] statUpdates;
+        string[] movementPath;
+    }
+```
+
+#### Parameters
+
+`(uint256)playerID`: The ID of the player associated with this event.
+
+`(string)cardType`: The card type drawn during the event, e.g. Ambush, Event, Treasure.
+
+`(string)cardDrawn`: The card title drawn by each player during the event.
+
+`(string)cardResult`: A description of the result of the card drawn during the event.
+
+`(string[3])inventoryChanges`: The inventory changes that occur as a result of the card drawn. There are 3 values that get returned, `[item loss, item gain, hand loss]`, where item loss is an item that is removed from the player's inventory (if present), item gain is an item that is added to the player's inventory, and hand loss is either "Right" or "Left" to represent a player losing whatever item they have equipped in that particular hand. Any or all of these 3 array elements may be empty strings, which represents no action.
+
+`(int8[3])statUpdates`: An array of player attribute adjustments with a representation of `[movement adjustment, agility adjustment, dexterity adjustment]`. Each value can be a positive or negative integer. A positive value will increase a particular attribute up to the maximum allowed and negative will reduce a particular attribute down to a minimum of 0.
+
+`(string[])movementPath`: An array of zone aliases which define the movement path of the player during the event.
