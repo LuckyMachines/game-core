@@ -1,6 +1,6 @@
 {
   "name": "@luckymachines/game-core",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "Components for building on chain game backends.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,5 +23,6 @@
   "homepage": "https://github.com/StudioMaxIO/game-core#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^4.6.0"
-  }
+  },
+  "devDependencies": {}
 }
