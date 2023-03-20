@@ -12,6 +12,7 @@ or
 
     import GameSummaryABI from "@luckymachines/game-core/games/hexploration/abi/GameSummary.json";
     import PlayerSummaryABI from "@luckymachines/game-core/games/hexploration/abi/PlayerSummary.json";
+    import PlayZoneSummaryABI from "@luckymachines/game-core/games/hexploration/abi/PlayerZoneSummary.json";
     import ControllerABI from "@luckymachines/game-core/games/hexploration/abi/HexplorationController.json";
     import EventsABI from "@luckymachines/game-core/games/hexploration/abi/GameEvents.json";
 
@@ -25,6 +26,7 @@ All frontend interactions will potentially interact with three contracts:
 - [Game Events](#game-events-gameeventssol): All game events are emitted here. Subscribe to any events from this contract.
 - [Game Summary](#game-summary-gamesummarysol): Various summaries of current game state. These are all view functions and can be called freely at no cost.
 - [Player Summary](#player-summary-playersummarysol): Various summaries of current player state. These are all view functions and can be called freely at no cost.
+- [Play Zone Summary](#play-zone-summary-playzonesummarysol): Various summaries of play zones on the game board. These are all view functions and can be called freely at no cost.
 
 ## Deployed Contracts:
 
@@ -888,6 +890,70 @@ playerRecoveredArtifacts(
 
 ---
 
+## Game Summary (GameSummary.sol)
+
+A contract with all view functions that return summaries of play zones on the game board.
+
+### Game Summary Functions
+
+function playZoneInventory(
+address gameBoardAddress,
+uint256 gameID,
+string memory zoneAlias
+)
+
+| **Name**                                          | **Description**                                 | **Caller** |
+| ------------------------------------------------- | ----------------------------------------------- | ---------- |
+| [allPlayZoneInventories](#allplayzoneinventories) | Inventories of all play zones on the game board | Public     |
+| [playZoneInventory](#playzoneinventory)           | Inventory held by a given play zone alias       | Public     |
+
+#### allPlayZoneInventories
+
+Returns all inventory items held by all play zones on the game board.
+
+```solidity
+function allPlayZoneInventories(
+        address gameBoardAddress,
+        uint256 gameID
+    ) public view returns (MultiInventory[] memory allInventory)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(MultiInventory[])allInventory`: An array of all zones on the board and their associated inventories. Returns an array of [MultiInventory](#multiinventory) structs
+
+#### playZoneInventory
+
+Returns all inventory items held by a specified play zone on the game board.
+
+```solidity
+function playZoneInventory(
+        address gameBoardAddress,
+        uint256 gameID,
+        string memory zoneAlias
+    ) public view returns (InventoryItem[] memory inventory)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+`(string)zoneAlias`: Alias of the play zone, e.g. `"2,1"`
+
+##### Return Values
+
+`(InventoryItem[])inventory`: An array of all inventory items held by the specified play zone. Returns an array of [InventoryItem](#inventoryitem) structs.
+
+---
+
 ## Game Controller (HexplorationController.sol)
 
 A contract with all of the interactions required by the player to [create](#requestnewgame), [join](#registerforgame), and [play](#submitaction) Hexploration. This contract is generally meant to be interacted with directly by the player, so these methods should always be called from a player's connected wallet. The exception is in [requesting a new game](#requestnewgame), which is a function callable by anyone, so it can potentially be called via a private provider.
@@ -972,7 +1038,7 @@ Action options are passed as an array of strings. For single values pass an arra
 
 - **Move**: The path of movement as an array of strings, e.g. `["2,2","3,3","4,3"]`.
 
-- **Help**: The ID of the player to help / revive, e,g, `["3"]`.
+- **Help**: The ID of the player to help / revive and the attribute to transfer e,g, `["3"], ["Agility]`.
 
 - **Rest**: The attribute to rest and improve. Can choose `["Movement"]`, `["Agility"]`, or `["Dexterity"]`.
 
@@ -1251,3 +1317,33 @@ struct EventSummary {
 `(int8[3])statUpdates`: An array of player attribute adjustments with a representation of `[movement adjustment, agility adjustment, dexterity adjustment]`. Each value can be a positive or negative integer. A positive value will increase a particular attribute up to the maximum allowed and negative will reduce a particular attribute down to a minimum of 0.
 
 `(string[])movementPath`: An array of zone aliases which define the movement path of the player during the event.
+
+### InventoryItem
+
+```solidity
+struct InventoryItem {
+        string item;
+        uint256 quantity;
+    }
+```
+
+#### Parameters
+
+`(string)item`: The name of the item in inventory.
+
+`(uint256)quantity`: The quantity of this item held in inventory.
+
+### MultiInventory
+
+```solidity
+ struct MultiInventory {
+        string zoneAlias;
+        InventoryItem[] inventory;
+    }
+```
+
+#### Parameters
+
+`(string)zoneAlias`: The alias of the play zone, e.g. `"3,4"`
+
+`(InventoryItem[])inventory`: An array of [InventoryItem](#inventoryitem) structs.
