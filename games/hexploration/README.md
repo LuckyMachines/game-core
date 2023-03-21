@@ -46,6 +46,7 @@ A contract with all view functions that return summaries of current game state.
 | [allPlayerActiveInventories](#allplayeractiveinventories)     | All players active inventories           | Public     |
 | [allPlayerInactiveInventories](#allplayerinactiveinventories) | All players inactive inventories         | Public     |
 | [allPlayerLocations](#allplayerlocations)                     | Locations of all players in the game     | Public     |
+| [allPlayers](#allplayers)                                     | Player info for all registered players   | Public     |
 | [boardSize](#boardsize)                                       | The size of the game board (rows x cols) | Public     |
 | [canDigAtZone](#candigatzone)                                 | Check if digging is available            | Public     |
 | [currentDay](#currentday)                                     | The current day of a given game          | Public     |
@@ -189,6 +190,27 @@ allPlayerLocations(address gameBoardAddress, uint256 gameID)
 `(uint256[])playerIDs`: An array of player IDs of all players registered for game.
 
 `(string[])playerZones`: An array of zones in which each of the players is currently located. Position corresponds with position of playerIDs, e.g. playerZones[2] will be the location of the player with ID playerIDs[2].
+
+#### allPlayers
+
+Player info for all players registered in a specified game.
+
+```solidity
+function allPlayers(
+        address gameBoardAddress,
+        uint256 gameID
+    ) public view returns (PlayerInfo[] memory players)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+##### Return Values
+
+`(PlayerInfo[])players`: An array of [PlayerInfo](#playerinfo) structs.
 
 #### boardSize
 
@@ -493,38 +515,11 @@ A contract with all view functions that return summaries of current player state
 | [currentHandInventory](#currenthandinventory)         | Items equipped to left & right hands          | Public / Player |
 | [currentLocation](#currentlocation)                   | Current location of player                    | Public / Player |
 | [currentPlayerStats](#currentplayerstats)             | Current player attributes                     | Public / Player |
+| [getPlayerAddress](#getplayeraddress)                 | The address of a player from a player ID      | Public          |
+| [getPlayerID](#getplayerid)                           | The ID of a player for a given game           | Public / Player |
 | [inactiveInventory](#inactiveinventory)               | Items held by player, but not active (in bag) | Public / Player |
 | [isAtCampsite](#isatcampsite)                         | Check if player is at a campsite              | Public / Player |
 | [playerRecoveredArtifacts](#playerrecoveredartifacts) | List of all artifacts recovered by player     | Public / Player |
-
-#### getPlayerID
-
-Returns a player ID from a specified wallet address.
-
-```solidity
-getPlayerID(address gameBoardAddress, uint256 gameID)
-        public
-        view
-        returns (uint256 playerID)
-
-getPlayerID(
-        address gameBoardAddress,
-        uint256 gameID,
-        address playerAddress
-    ) public view returns (uint256 playerID)
-```
-
-##### Parameters
-
-`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
-
-`(uint256)gameID`: ID of the game.
-
-`(address)playerAddress`: Wallet address of the player.
-
-##### Return Values
-
-`(uint256)playerID`: The player ID used to represent a player in a given game.
 
 #### isActive
 
@@ -802,6 +797,59 @@ currentPlayerStats(
 
 `(uint8)dexterity`: The player's current dexterity score.
 
+#### getPlayerID
+
+Returns a player ID from a specified wallet address.
+
+```solidity
+getPlayerID(address gameBoardAddress, uint256 gameID)
+        public
+        view
+        returns (uint256 playerID)
+
+getPlayerID(
+        address gameBoardAddress,
+        uint256 gameID,
+        address playerAddress
+    ) public view returns (uint256 playerID)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+`(address)playerAddress`: Wallet address of the player.
+
+##### Return Values
+
+`(uint256)playerID`: The player ID used to represent a player in a given game.
+
+#### getPlayerAddress
+
+Returns the player's wallet address from specified player ID.
+
+```solidity
+function getPlayerAddress(
+        address gameBoardAddress,
+        uint256 gameID,
+        uint256 playerID
+    ) public view returns (address playerAddress)
+```
+
+##### Parameters
+
+`(address)gameBoardAddress`: Contract address of the game board. This can be found in [deployments.json](#deployed-contracts).
+
+`(uint256)gameID`: ID of the game.
+
+`(uint256)playerID`: ID of the player within the given game.
+
+##### Return Values
+
+`(address)playerAddress`: The player's wallet address.
+
 #### inactiveInventory
 
 The inventory owned by a player, but not in use. This is what is in the player's possession, but may not have been played yet.
@@ -1059,6 +1107,7 @@ Action options are passed as an array of strings. For single values pass an arra
 | [LandingSiteSet](#landingsiteset)               | The landing site has been chosen             |
 | [PlayerIdleKick](#playeridlekick)               | A player was kicked due to idleness          |
 | [ProcessingPhaseChange](#processingphasechange) | The turn processing is in a new phase        |
+| [TurnProcessingFailed](#turnprocessingfailed)   | The turn processing failed.                  |
 | [TurnProcessingStart](#turnprocessingstart)     | The first phase of turn processing began     |
 
 #### ActionSubmit
@@ -1143,7 +1192,11 @@ event GamePhaseChange(
 This event is emitted each time a player registers for a game.
 
 ```solidity
-event GameRegistration(uint256 indexed gameID, address playerAddress)
+event GameRegistration(
+        uint256 indexed gameID,
+        address playerAddress,
+        uint256 playerID
+    );
 ```
 
 ##### Parameters
@@ -1151,6 +1204,8 @@ event GameRegistration(uint256 indexed gameID, address playerAddress)
 `(uint256)gameID`: The game for which the player registered.
 
 `(address)playerAddress`: The wallet address of the registered player.
+
+`(uint256)playerID`: The player ID assigned for the registered game.
 
 #### GameStart
 
@@ -1219,6 +1274,26 @@ event ProcessingPhaseChange(
 `(uint256)timeStamp`: The time the processing phase was changed.
 
 `(uint256)newPhase`: The current [enumerated processing phase](#game-turn-processing).
+
+#### TurnProcessingFailed
+
+This event is emitted wht the game is unable to process the [turn processing phase](#game-turn-processing) and it cannot be set to `Processing`.
+
+```solidity
+event TurnProcessingFail(
+        uint256 indexed gameID,
+        uint256 queueID,
+        uint256 timeStamp
+    )
+```
+
+##### Parameters
+
+`(uint256)gameID`: The game in which the turn processing failed.
+
+`(uint256)queueID`: The associated turn queue that failed to process.
+
+`(uint256)timeStamp`: The time the game failed processing.
 
 #### TurnProcessingStart
 
@@ -1347,3 +1422,24 @@ struct InventoryItem {
 `(string)zoneAlias`: The alias of the play zone, e.g. `"3,4"`
 
 `(InventoryItem[])inventory`: An array of [InventoryItem](#inventoryitem) structs.
+
+### PlayerInfo
+
+```solidity
+struct PlayerInfo {
+        uint256 playerID;
+        address playerAddress;
+        uint256 idleTurns;
+        bool isActive;
+    }
+```
+
+#### Parameters
+
+`uint256(playerID)`: The ID of the player used within the game.
+
+`address(playerAddress)`: The address of the player.
+
+`uint256(idleTurns)`: How many turns the player has been idle for.
+
+`bool(isActive)`: Whether or not the player is active in this game. Players may be registered but not active.
