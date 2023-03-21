@@ -963,7 +963,7 @@ Returns all inventory items held by all play zones on the game board.
 function allPlayZoneInventories(
         address gameBoardAddress,
         uint256 gameID
-    ) public view returns (MultiInventory[] memory allInventory)
+    ) public view returns (ZoneInventory[] memory allInventory)
 ```
 
 ##### Parameters
@@ -974,7 +974,7 @@ function allPlayZoneInventories(
 
 ##### Return Values
 
-`(MultiInventory[])allInventory`: An array of all zones on the board and their associated inventories. Returns an array of [MultiInventory](#multiinventory) structs
+`(ZoneInventory[])allInventory`: An array of all zones on the board and their associated inventories. Returns an array of [ZoneInventory](#zoneinventory) structs
 
 #### playZoneInventory
 
@@ -1408,10 +1408,10 @@ struct InventoryItem {
 
 `(uint256)quantity`: The quantity of this item held in inventory.
 
-### MultiInventory
+### ZoneInventory
 
 ```solidity
- struct MultiInventory {
+ struct ZoneInventory {
         string zoneAlias;
         InventoryItem[] inventory;
     }
