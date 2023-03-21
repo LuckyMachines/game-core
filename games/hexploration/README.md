@@ -12,7 +12,6 @@ or
 
     import GameSummaryABI from "@luckymachines/game-core/games/hexploration/abi/GameSummary.json";
     import PlayerSummaryABI from "@luckymachines/game-core/games/hexploration/abi/PlayerSummary.json";
-    import PlayZoneSummaryABI from "@luckymachines/game-core/games/hexploration/abi/PlayerZoneSummary.json";
     import ControllerABI from "@luckymachines/game-core/games/hexploration/abi/HexplorationController.json";
     import EventsABI from "@luckymachines/game-core/games/hexploration/abi/GameEvents.json";
 
@@ -20,7 +19,7 @@ or
 
 ## Getting Started:
 
-All frontend interactions will potentially interact with three contracts:
+Frontends will interact with some or all of these contracts:
 
 - [Game Controller](#game-controller-hexplorationcontrollersol): Players submit game moves through this contract.
 - [Game Events](#game-events-gameeventssol): All game events are emitted here. Subscribe to any events from this contract.
@@ -40,25 +39,27 @@ A contract with all view functions that return summaries of current game state.
 
 ### Game Summary Functions
 
-| **Name**                                                      | **Description**                          | **Caller** |
-| ------------------------------------------------------------- | ---------------------------------------- | ---------- |
-| [activeZones](#activezones)                                   | All zones that have been revealed        | Public     |
-| [allPlayerActiveInventories](#allplayeractiveinventories)     | All players active inventories           | Public     |
-| [allPlayerInactiveInventories](#allplayerinactiveinventories) | All players inactive inventories         | Public     |
-| [allPlayerLocations](#allplayerlocations)                     | Locations of all players in the game     | Public     |
-| [allPlayers](#allplayers)                                     | Player info for all registered players   | Public     |
-| [boardSize](#boardsize)                                       | The size of the game board (rows x cols) | Public     |
-| [canDigAtZone](#candigatzone)                                 | Check if digging is available            | Public     |
-| [currentDay](#currentday)                                     | The current day of a given game          | Public     |
-| [currentGameplayQueue](#currentgameplayqueue)                 | The ID of the current gameplay queue     | Public     |
-| [currentPhase](#currentphase)                                 | The current game phase (Day / Night)     | Public     |
-| [gameStarted](#gamestarted)                                   | Check if a game has started              | Public     |
-| [getAvailableGames](#getavailablegames)                       | All available open games                 | Public     |
-| [landingSite](#landingsite)                                   | The landing site for a given game        | Public     |
-| [lastDayPhaseEvents](#lastdayphaseevents)                     | Summary of the latest day phase events   | Public     |
-| [lastPlayerActions](#lastplayeractions)                       | Summary of the latest player actions     | Public     |
-| [recoveredArtifacts](#recoveredartifacts)                     | List of all recovered artifacts          | Public     |
-| [totalPlayers](#totalplayers)                                 | Total players registered for a game      | Public     |
+| **Name**                                                      | **Description**                                                                   | **Caller** |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------- | ---------- |
+| [activeZones](#activezones)                                   | All zones that have been revealed                                                 | Public     |
+| [allPlayZoneInventories](#allplayzoneinventories)             | Calls same function on [Play Zone Summary](#play-zone-summary-playzonesummarysol) | Public     |
+| [allPlayerActiveInventories](#allplayeractiveinventories)     | All players active inventories                                                    | Public     |
+| [allPlayerInactiveInventories](#allplayerinactiveinventories) | All players inactive inventories                                                  | Public     |
+| [allPlayerLocations](#allplayerlocations)                     | Locations of all players in the game                                              | Public     |
+| [allPlayers](#allplayers)                                     | Player info for all registered players                                            | Public     |
+| [boardSize](#boardsize)                                       | The size of the game board (rows x cols)                                          | Public     |
+| [canDigAtZone](#candigatzone)                                 | Check if digging is available                                                     | Public     |
+| [currentDay](#currentday)                                     | The current day of a given game                                                   | Public     |
+| [currentGameplayQueue](#currentgameplayqueue)                 | The ID of the current gameplay queue                                              | Public     |
+| [currentPhase](#currentphase)                                 | The current game phase (Day / Night)                                              | Public     |
+| [gameStarted](#gamestarted)                                   | Check if a game has started                                                       | Public     |
+| [getAvailableGames](#getavailablegames)                       | All available open games                                                          | Public     |
+| [landingSite](#landingsite)                                   | The landing site for a given game                                                 | Public     |
+| [lastDayPhaseEvents](#lastdayphaseevents)                     | Summary of the latest day phase events                                            | Public     |
+| [lastPlayerActions](#lastplayeractions)                       | Summary of the latest player actions                                              | Public     |
+| [recoveredArtifacts](#recoveredartifacts)                     | List of all recovered artifacts                                                   | Public     |
+| [playZoneInventory](#playzoneinventory)                       | Calls same function on [Play Zone Summary](#play-zone-summary-playzonesummarysol) | Public     |
+| [totalPlayers](#totalplayers)                                 | Total players registered for a game                                               | Public     |
 
 #### activeZones
 
@@ -938,11 +939,11 @@ playerRecoveredArtifacts(
 
 ---
 
-## Game Summary (GameSummary.sol)
+## Play Zone Summary (PlayZoneSummary.sol)
 
-A contract with all view functions that return summaries of play zones on the game board.
+A contract with all view functions that return summaries of play zones on the game board. Note: these functions are callable via GameSummary.sol, so an additional ABI import is not necessary.
 
-### Game Summary Functions
+### Play Zone Summary Functions
 
 function playZoneInventory(
 address gameBoardAddress,
