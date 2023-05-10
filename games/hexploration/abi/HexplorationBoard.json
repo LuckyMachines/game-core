@@ -1,0 +1,3097 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "adminAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_gridWidth",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_gridHeight",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_zoneAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "previousAdminRole",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "newAdminRole",
+        "type": "bytes32"
+      }
+    ],
+    "name": "RoleAdminChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleGranted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleRevoked",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "DEFAULT_GAME_ID",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "FACTORY_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "GAME_MASTER_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "PLAY_ZONE_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VERIFIED_CONTROLLER_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "factoryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "addFactory",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vcAddress",
+        "type": "address"
+      }
+    ],
+    "name": "addVerifiedController",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string[2][]",
+        "name": "connections",
+        "type": "string[2][]"
+      }
+    ],
+    "name": "addZoneConnections",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "playZoneAddresses",
+        "type": "address[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "zoneAliases",
+        "type": "string[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "name": "addZones",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "characterCard",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_playerRegistry",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_gameRegistry",
+        "type": "address"
+      }
+    ],
+    "name": "createGame",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_playerRegistry",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_gameRegistry",
+        "type": "address"
+      },
+      {
+        "internalType": "address[]",
+        "name": "playZoneAddresses",
+        "type": "address[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "zoneAliases",
+        "type": "string[]"
+      }
+    ],
+    "name": "createGame",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "createGrid",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "name": "currentBoard",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "gameOver",
+            "type": "bool"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "token",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "zoneAlias",
+                "type": "string"
+              },
+              {
+                "internalType": "bool",
+                "name": "isRevealed",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "isAvailable",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct GameStructs.Relic[]",
+            "name": "relics",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "zoneAlias",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "artifact",
+                "type": "string"
+              },
+              {
+                "internalType": "uint8",
+                "name": "artifactFoundBy",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "zoneIndex",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "tile",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8[]",
+                "name": "players",
+                "type": "uint8[]"
+              },
+              {
+                "internalType": "bool",
+                "name": "tileIsSet",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "enabled",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "artifactFound",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "isRelicSpace",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "initialZone",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct GameStructs.Zone[]",
+            "name": "zones",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "artifactsRetrieved",
+            "type": "string[]"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "artifactsRetrievedByPlayer",
+            "type": "uint8[]"
+          }
+        ],
+        "internalType": "struct GameStructs.GameBoard",
+        "name": "board",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "firstQueueUpdate",
+        "type": "uint256"
+      }
+    ],
+    "name": "currentBoard",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "gameOver",
+            "type": "bool"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "token",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "zoneAlias",
+                "type": "string"
+              },
+              {
+                "internalType": "bool",
+                "name": "isRevealed",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "isAvailable",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct GameStructs.Relic[]",
+            "name": "relics",
+            "type": "tuple[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "zoneAlias",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "artifact",
+                "type": "string"
+              },
+              {
+                "internalType": "uint8",
+                "name": "artifactFoundBy",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "zoneIndex",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "tile",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8[]",
+                "name": "players",
+                "type": "uint8[]"
+              },
+              {
+                "internalType": "bool",
+                "name": "tileIsSet",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "enabled",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "artifactFound",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "isRelicSpace",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "initialZone",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct GameStructs.Zone[]",
+            "name": "zones",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "artifactsRetrieved",
+            "type": "string[]"
+          },
+          {
+            "internalType": "uint8[]",
+            "name": "artifactsRetrievedByPlayer",
+            "type": "uint8[]"
+          }
+        ],
+        "internalType": "struct GameStructs.GameBoard",
+        "name": "board",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "gameState",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gameplayQueue",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "zAlias",
+        "type": "string"
+      }
+    ],
+    "name": "getAliasAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "encodedUpdatesAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGameStartUpdate",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "playerPositionID_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerPositionID_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerPositionID_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerPositionID_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "spacesToMove_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "spacesToMove_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "spacesToMove_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "spacesToMove_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquipIDs_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquipIDs_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquipIDs_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquipIDs_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandLossIDs_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandLossIDs_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandLossIDs_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandLossIDs_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersTo_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersTo_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersTo_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersTo_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersFrom_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersFrom_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersFrom_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersFrom_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferQtys_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferQtys_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferQtys_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferQtys_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "otherTransferTo",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "otherTransferFrom",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "otherTransferQty",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "otherTransferItemType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerStatUpdateIDs_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerStatUpdateIDs_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerStatUpdateIDs_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerStatUpdateIDs_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerActiveActionIDs_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerActiveActionIDs_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerActiveActionIDs_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerActiveActionIDs_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_5",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_6",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_5",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_6",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_5",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_6",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_5",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_6",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquips_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquips_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquips_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquips_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferItemTypes_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferItemTypes_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferItemTypes_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferItemTypes_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActions_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActions_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActions_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActions_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResults_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResults_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResults_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResults_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_0_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_1_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_2_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_3_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCardType_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCardType_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCardType_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCardType_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_0_0",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_0_1",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_0_2",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_1_0",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_1_1",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_1_2",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_2_0",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_2_1",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_2_2",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_3_0",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_3_1",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_3_2",
+            "type": "int8"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerEquipHands_0",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerEquipHands_1",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerEquipHands_2",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerEquipHands_3",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerHandLosses_0",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerHandLosses_1",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerHandLosses_2",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerHandLosses_3",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "gamePhase",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasDayEvent",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "setupEndgame",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "randomness_1",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "randomness_2",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "randomness_3",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "randomness_4",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "gameID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "queueID",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct EncodedUpdate.Update",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_zoneAlias",
+        "type": "string"
+      }
+    ],
+    "name": "getInputs",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "zoneInputs",
+        "type": "string[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_zoneAlias",
+        "type": "string"
+      }
+    ],
+    "name": "getOutputs",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "zoneOutputs",
+        "type": "string[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getRoleAdmin",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "getRoleMember",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getRoleMemberCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "encodedUpdatesAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "queueID",
+        "type": "uint256"
+      }
+    ],
+    "name": "getUpdate",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "playerPositionID_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerPositionID_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerPositionID_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerPositionID_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "spacesToMove_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "spacesToMove_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "spacesToMove_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "spacesToMove_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquipIDs_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquipIDs_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquipIDs_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquipIDs_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandLossIDs_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandLossIDs_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandLossIDs_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerHandLossIDs_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersTo_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransfersFrom_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferQtys_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersTo_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersTo_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersTo_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersTo_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersFrom_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersFrom_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersFrom_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransfersFrom_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferQtys_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferQtys_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferQtys_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferQtys_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "otherTransferTo",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "otherTransferFrom",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "otherTransferQty",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "otherTransferItemType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerStatUpdateIDs_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerStatUpdateIDs_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerStatUpdateIDs_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerStatUpdateIDs_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerActiveActionIDs_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerActiveActionIDs_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerActiveActionIDs_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerActiveActionIDs_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_5",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_0_6",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_5",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_1_6",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_5",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_2_6",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_5",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerMovementOptions_3_6",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquips_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquips_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquips_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerEquips_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "zoneTransferItemTypes_4",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferItemTypes_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferItemTypes_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferItemTypes_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "playerTransferItemTypes_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActions_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActions_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActions_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActions_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionOptions_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResults_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResults_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResults_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResults_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionResultCard_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_0_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_1_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_2_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "activeActionInventoryChanges_3_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_0_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_0_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_1_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_1_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_2_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_2_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_3_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCard_3_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCardType_0",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCardType_1",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCardType_2",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "dayPhaseResultCardType_3",
+            "type": "uint8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_0_0",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_0_1",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_0_2",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_1_0",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_1_1",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_1_2",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_2_0",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_2_1",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_2_2",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_3_0",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_3_1",
+            "type": "int8"
+          },
+          {
+            "internalType": "int8",
+            "name": "playerStatUpdates_3_2",
+            "type": "int8"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerEquipHands_0",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerEquipHands_1",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerEquipHands_2",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerEquipHands_3",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerHandLosses_0",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerHandLosses_1",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerHandLosses_2",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "playerHandLosses_3",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "gamePhase",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasDayEvent",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "setupEndgame",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "randomness_1",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "randomness_2",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "randomness_3",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "randomness_4",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "gameID",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "queueID",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct EncodedUpdate.Update",
+        "name": "update",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getZoneAliases",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "grantRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gridHeight",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gridWidth",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "fromZone",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "toZone",
+        "type": "string"
+      }
+    ],
+    "name": "hasOutput",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "zoneHasOutput",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "hasRole",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "hexZoneAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "factoryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "isFactory",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "factoryIsAuthorized",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "name": "lockRegistration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "gameRegistryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "openGames",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "availableGames",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "playerLimit",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "currentRegistrations",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "playZoneInputs",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "playZoneOutputs",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "playZones",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "playerRegistry",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "prAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "playerAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "name": "registerPlayer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "renounceRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "gameRegistryAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxPlayers",
+        "type": "uint256"
+      }
+    ],
+    "name": "requestNewGame",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "revokeRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "characterCardAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setCharacterCard",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "encodedUpdatesAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setEncodedUpdates",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "gameBoardUpdatesAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setGameBoardUpdates",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "gs",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gameID",
+        "type": "uint256"
+      }
+    ],
+    "name": "setGameState",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "gameplayQueueAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setGameplayQueue",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "playerRegistryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setPlayerRegistry",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tokenInventoryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTokenInventory",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenInventory",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "zoneAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "zoneAlias",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "zoneAliases",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_zoneAlias",
+        "type": "string"
+      }
+    ],
+    "name": "zoneIndex",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
