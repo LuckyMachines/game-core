@@ -112,6 +112,13 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "acceptTransferAdminRequest",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "uint8",
@@ -212,6 +219,39 @@
             }
         ],
         "name": "addVerifiedController",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "adminTransferRequest",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "adminTransferRequestOrigin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cancelTransferAdminRequest",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -534,6 +574,19 @@
             }
         ],
         "name": "revokeRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newAdminAddress",
+                "type": "address"
+            }
+        ],
+        "name": "safeTransferAdmin",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
