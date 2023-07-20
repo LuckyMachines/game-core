@@ -212,6 +212,13 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "acceptTransferAdminRequest",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
@@ -244,6 +251,32 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "adminTransferRequest",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "adminTransferRequestOrigin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "uint256",
@@ -257,6 +290,13 @@
             }
         ],
         "name": "allPlayersRegistered",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cancelTransferAdminRequest",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -480,6 +520,19 @@
     {
         "inputs": [
             {
+                "internalType": "bytes",
+                "name": "progressWithData",
+                "type": "bytes"
+            }
+        ],
+        "name": "progressLoop",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "uint256",
                 "name": "",
                 "type": "uint256"
@@ -606,6 +659,19 @@
     {
         "inputs": [
             {
+                "internalType": "address",
+                "name": "newAdminAddress",
+                "type": "address"
+            }
+        ],
+        "name": "safeTransferAdmin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "uint256",
                 "name": "amount",
                 "type": "uint256"
@@ -653,6 +719,24 @@
         "name": "setVRFSubscriptionID",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "shouldProgressLoop",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "loopIsReady",
+                "type": "bool"
+            },
+            {
+                "internalType": "bytes",
+                "name": "progressWithData",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -706,6 +790,25 @@
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateRequests",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "useBand",
         "outputs": [],
@@ -748,6 +851,25 @@
     {
         "inputs": [],
         "name": "useMockVRF",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "wantsUpdate",
         "outputs": [
             {
                 "internalType": "bool",
