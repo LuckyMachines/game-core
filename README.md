@@ -40,15 +40,19 @@ game-core/
 │   │   │   └── XYCoords.sol      # Coordinate string generation (up to 50x50)
 │   │   ├── custom_boards/
 │   │   │   └── HexGrid.sol       # Hexagonal grid board implementation
-│   │   └── custom_zones/
-│   │       ├── BackDoor.sol      # Zone that kicks players to a specific path
-│   │       └── LuckyDuck.sol     # Zone with random path selection
+│   │   ├── custom_zones/
+│   │   │   ├── BackDoor.sol      # Zone that kicks players to a specific path
+│   │   │   └── LuckyDuck.sol     # Zone with random path selection
+│   │   └── custom_games/
+│   │       └── VaultBreakersGame.sol  # Self-contained heist game
 │   └── abi/v0.0/                 # Compiled contract ABIs
 ├── games/
-│   └── hexploration/             # Hexploration game implementation
-│       ├── abi/                   # Game-specific ABIs
-│       ├── deployments.json       # Deployed contract addresses (3 networks)
-│       └── README.md              # Hexploration API documentation
+│   ├── hexploration/             # Hexploration game implementation
+│   │   ├── abi/                   # Game-specific ABIs
+│   │   ├── deployments.json       # Deployed contract addresses (3 networks)
+│   │   └── README.md              # Hexploration API documentation
+│   └── vault-breakers/           # Vault Breakers game implementation
+│       └── README.md              # Vault Breakers API documentation
 ├── package.json
 └── LICENSE                        # GPL-3.0-or-later
 ```
@@ -137,6 +141,33 @@ Contract addresses for all networks are in [`games/hexploration/deployments.json
 | **Sepolia** | Active | Chainlink VRF v2 |
 | **Godwoken Testnet** | Active | Band Protocol VRF |
 | **Mumbai** (Polygon) | Historical | Chainlink VRF v2 + Band Protocol |
+
+### Vault Breakers
+
+A single-zone heist game where 2-4 rival thieves compete to crack a vault with 5 locks. Each round, players choose PICK (crack a lock), SEARCH (find tools), or SABOTAGE (stun a rival and steal a tool). First to crack all 5 locks wins.
+
+See [`games/vault-breakers/README.md`](games/vault-breakers/README.md) for the full API reference including contract functions, events, and integration examples.
+
+#### Quick Start (Frontend Integration)
+
+```js
+import VaultBreakersABI from "@luckymachines/game-core/games/vault-breakers/abi/VaultBreakersGame.json";
+```
+
+#### Key Integration Points
+
+| Contract | Role |
+|----------|------|
+| **VaultBreakersGame** | Single contract: create games, register players, submit actions, resolve rounds, read state |
+
+#### Architecture Differences from Hexploration
+
+| Feature | Hexploration | Vault Breakers |
+|---------|-------------|----------------|
+| Contracts | 12+ | 1 (self-contained) |
+| Randomness | Chainlink VRF v2 | On-chain pseudo-random |
+| Autoloop | Required (off-chain keeper) | Not needed |
+| Deploy | Multi-step factory pattern | Single contract deploy |
 
 ## NPM Scripts
 
