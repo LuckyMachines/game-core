@@ -4,11 +4,33 @@ Components for building on-chain game backends.
 
 ## Overview
 
-Game Core is a modular smart contract framework for creating fully on-chain games. It provides the foundational infrastructure -- game boards, player management, zone-based movement, rule systems, and randomness -- so game developers can focus on gameplay logic rather than boilerplate.
+Game Core is a modular smart contract framework for creating fully on-chain games. It provides the foundational infrastructure -- game boards, player management, zone-based movement, rule systems, gas management, and randomness -- so game developers can focus on gameplay logic rather than boilerplate.
 
 The framework follows a factory pattern: deploy the core infrastructure once, then dynamically create game instances with custom boards, zones, and rulesets.
 
 ## Installation
+
+### As a Git Submodule (Foundry projects)
+
+The recommended way to use Game Core in a Foundry project:
+
+```bash
+forge install LuckyMachines/game-core
+```
+
+Then add the remapping to `remappings.txt`:
+
+```
+@luckymachines/game-core/=lib/game-core/
+```
+
+Import in your Solidity contracts:
+
+```solidity
+import "@luckymachines/game-core/contracts/src/v0.0/GameBoard.sol";
+```
+
+### Via npm (legacy)
 
 ```bash
 yarn add @luckymachines/game-core
@@ -31,6 +53,7 @@ game-core/
 │   │   ├── GameRegistry.sol      # Universal registry for all games
 │   │   ├── GameController.sol    # Player action submission
 │   │   ├── GameEvents.sol        # Centralized event emission
+│   │   ├── GasStation.sol        # Gas management for meta-transactions
 │   │   ├── PlayerRegistry.sol    # Player registration and management
 │   │   ├── PlayZone.sol          # Individual play zone logic
 │   │   ├── PlayZoneFactory.sol   # Factory for creating play zones
@@ -63,6 +86,7 @@ game-core/
 | **Ruleset** | Configurable game rules: max capacity, entry/exit sizes, payouts, lockable rulesets |
 | **GameEvents** | Centralized event emission contract decoupled from game state logic |
 | **GameController** | Interface for players to submit actions |
+| **GasStation** | Gas management contract for subsidizing player transactions |
 | **RandomnessConsumer** | Dual randomness provider supporting Chainlink VRF v2 and Band Protocol VRF |
 
 ### Custom Implementations

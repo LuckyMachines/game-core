@@ -4,13 +4,11 @@
   "description": "Components for building on chain game backends.",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest",
-    "import-abis": "node local/import-hexploration.js",
-    "chainlink-addresses": "node local/chainlink-addresses.js"
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StudioMaxIO/game-core.git"
+    "url": "git+https://github.com/LuckyMachines/game-core.git"
   },
   "keywords": [
     "blockchain",
@@ -19,9 +17,9 @@
   "author": "Max Meier",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/StudioMaxIO/game-core/issues"
+    "url": "https://github.com/LuckyMachines/game-core/issues"
   },
-  "homepage": "https://github.com/StudioMaxIO/game-core#readme",
+  "homepage": "https://github.com/LuckyMachines/game-core#readme",
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",
     "@openzeppelin/contracts": "^4.6.0"
