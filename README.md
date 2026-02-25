@@ -40,19 +40,10 @@ game-core/
 │   │   │   └── XYCoords.sol      # Coordinate string generation (up to 50x50)
 │   │   ├── custom_boards/
 │   │   │   └── HexGrid.sol       # Hexagonal grid board implementation
-│   │   ├── custom_zones/
-│   │   │   ├── BackDoor.sol      # Zone that kicks players to a specific path
-│   │   │   └── LuckyDuck.sol     # Zone with random path selection
-│   │   └── custom_games/
-│   │       └── PlundrixGame.sol       # Self-contained heist game
+│   │   └── custom_zones/
+│   │       ├── BackDoor.sol      # Zone that kicks players to a specific path
+│   │       └── LuckyDuck.sol     # Zone with random path selection
 │   └── abi/v0.0/                 # Compiled contract ABIs
-├── games/
-│   ├── hexploration/             # Hexploration game implementation
-│   │   ├── abi/                   # Game-specific ABIs
-│   │   ├── deployments.json       # Deployed contract addresses (3 networks)
-│   │   └── README.md              # Hexploration API documentation
-│   └── plundrix/                 # Plundrix game implementation
-│       └── README.md              # Plundrix API documentation
 ├── package.json
 └── LICENSE                        # GPL-3.0-or-later
 ```
@@ -105,76 +96,19 @@ game-core/
 | `@openzeppelin/contracts` | ^4.6.0 | AccessControl, Counters |
 | `@chainlink/contracts` | ^0.5.1 | VRF v2 randomness |
 
-## Games
+## Games Built on Game Core
 
 ### Hexploration
 
-An on-chain adventure/exploration game played on a 10x10 hexagonal grid. Players explore zones, collect artifacts, draw event cards (Ambush, Event, Treasure, Relic decks), and manage inventory across Day/Night phase cycles. 1-4 players per game.
+An on-chain multiplayer explore & escape game played on a 10x10 hexagonal grid. Players explore zones, collect artifacts, draw event cards, and manage inventory across Day/Night phase cycles. 1-4 players per game. Uses 12+ contracts including the full Game Core framework with Chainlink VRF for randomness.
 
-See [`games/hexploration/README.md`](games/hexploration/README.md) for the full API reference including contract functions, events, enumerations, and structs.
-
-#### Quick Start (Frontend Integration)
-
-```js
-import GameSummaryABI from "@luckymachines/game-core/games/hexploration/abi/GameSummary.json";
-import PlayerSummaryABI from "@luckymachines/game-core/games/hexploration/abi/PlayerSummary.json";
-import ControllerABI from "@luckymachines/game-core/games/hexploration/abi/HexplorationController.json";
-import EventsABI from "@luckymachines/game-core/games/hexploration/abi/GameEvents.json";
-```
-
-#### Key Integration Points
-
-| Contract | Role |
-|----------|------|
-| **HexplorationController** | Players submit moves (register, request new game, submit actions) |
-| **GameEvents** | Subscribe to game events (phase changes, actions, game over, etc.) |
-| **GameSummary** | Read game state: zones, locations, inventories, artifacts (view functions, no gas) |
-| **PlayerSummary** | Read player state: stats, inventory, location, status (view functions, no gas) |
-| **PlayZoneSummary** | Read zone inventories (view functions, no gas) |
-
-#### Deployed Networks
-
-Contract addresses for all networks are in [`games/hexploration/deployments.json`](games/hexploration/deployments.json).
-
-| Network | Status | Randomness Provider |
-|---------|--------|---------------------|
-| **Sepolia** | Active | Chainlink VRF v2 |
-| **Godwoken Testnet** | Active | Band Protocol VRF |
-| **Mumbai** (Polygon) | Historical | Chainlink VRF v2 + Band Protocol |
+**Repo:** [LuckyMachines/hexploration](https://github.com/LuckyMachines/hexploration)
 
 ### Plundrix
 
-A single-zone heist game where 2-4 rival operatives compete to crack a vault with 5 locks. Each round, players choose PICK (crack a lock), SEARCH (find tools), or SABOTAGE (stun a rival and steal a tool). First to crack all 5 locks wins.
+A single-contract heist game where 2-4 rival operatives compete to crack a vault with 5 locks. Each round, players choose PICK, SEARCH, or SABOTAGE. Self-contained in one contract with on-chain pseudo-random resolution.
 
-See [`games/plundrix/README.md`](games/plundrix/README.md) for the full API reference including contract functions, events, and integration examples.
-
-#### Quick Start (Frontend Integration)
-
-```js
-import PlundrixABI from "@luckymachines/game-core/games/plundrix/abi/PlundrixGame.json";
-```
-
-#### Key Integration Points
-
-| Contract | Role |
-|----------|------|
-| **PlundrixGame** | Single contract: create games, register players, submit actions, resolve rounds, read state |
-
-#### Architecture Differences from Hexploration
-
-| Feature | Hexploration | Plundrix |
-|---------|-------------|----------|
-| Contracts | 12+ | 1 (self-contained) |
-| Randomness | Chainlink VRF v2 | On-chain pseudo-random |
-| Autoloop | Required (off-chain keeper) | Not needed |
-| Deploy | Multi-step factory pattern | Single contract deploy |
-
-## NPM Scripts
-
-```bash
-npm run import-abis          # Import Hexploration ABIs from deployment
-npm run chainlink-addresses  # Generate Chainlink address information
-```
+**Repo:** [LuckyMachines/plundrix](https://github.com/LuckyMachines/plundrix)
 
 ## License
 
