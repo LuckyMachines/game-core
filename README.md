@@ -57,7 +57,7 @@ game-core/
 │   │   ├── PlayerRegistry.sol    # Player registration and management
 │   │   ├── PlayZone.sol          # Individual play zone logic
 │   │   ├── PlayZoneFactory.sol   # Factory for creating play zones
-│   │   ├── RandomnessConsumer.sol # Chainlink VRF + Band Protocol VRF
+│   │   ├── RandomnessConsumer.sol # Chainlink VRF + Mock VRF
 │   │   ├── Ruleset.sol           # Game rule definitions
 │   │   ├── libraries/
 │   │   │   └── XYCoords.sol      # Coordinate string generation (up to 50x50)
@@ -87,7 +87,7 @@ game-core/
 | **GameEvents** | Centralized event emission contract decoupled from game state logic |
 | **GameController** | Interface for players to submit actions |
 | **GasStation** | Gas management contract for subsidizing player transactions |
-| **RandomnessConsumer** | Dual randomness provider supporting Chainlink VRF v2 and Band Protocol VRF |
+| **RandomnessConsumer** | Randomness provider supporting Chainlink VRF v2 and mock VRF for testing |
 
 ### Custom Implementations
 
