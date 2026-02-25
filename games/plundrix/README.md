@@ -1,6 +1,6 @@
-# Vault Breakers
+# Plundrix
 
-A single-zone heist game where 2-4 rival thieves compete to crack a vault with 5 locks. Each round, players choose one of three actions. First player to crack all 5 locks wins.
+A single-zone heist game where 2-4 rival operatives compete to crack a vault with 5 locks. Each round, players choose one of three actions. First player to crack all 5 locks wins.
 
 ## Install Game Core
 
@@ -13,7 +13,7 @@ or
 ## Import ABI
 
 ```js
-import VaultBreakersABI from "@luckymachines/game-core/games/vault-breakers/abi/VaultBreakersGame.json";
+import PlundrixABI from "@luckymachines/game-core/games/plundrix/abi/PlundrixGame.json";
 ```
 
 ---
@@ -24,7 +24,7 @@ import VaultBreakersABI from "@luckymachines/game-core/games/vault-breakers/abi/
 
 ```
 ┌───────────────────────────────┐
-│      VaultBreakersGame        │  (Single self-contained contract)
+│         PlundrixGame          │  (Single self-contained contract)
 │                               │
 │  ┌─────────────────────────┐  │
 │  │  RBAC (AccessControl)   │  │
@@ -50,7 +50,7 @@ import VaultBreakersABI from "@luckymachines/game-core/games/vault-breakers/abi/
 └───────────────────────────────┘
 ```
 
-Unlike Hexploration (which uses multiple contracts, Chainlink VRF, and an autoloop keeper), Vault Breakers is intentionally minimal:
+Unlike Hexploration (which uses multiple contracts, Chainlink VRF, and an autoloop keeper), Plundrix is intentionally minimal:
 
 - **Single contract** -- no GameBoard, PlayZone, PlayerRegistry, GameEvents, or GameController needed
 - **No VRF** -- uses on-chain pseudo-randomness (`keccak256(blockhash, gameID, round, timestamp, seed)`)
@@ -203,46 +203,46 @@ All events have `gameID` as an `indexed` parameter for efficient filtering.
 ```js
 import { createPublicClient, createWalletClient, http, parseAbi } from "viem";
 import { sepolia } from "viem/chains";
-import VaultBreakersABI from "@luckymachines/game-core/games/vault-breakers/abi/VaultBreakersGame.json";
+import PlundrixABI from "@luckymachines/game-core/games/plundrix/abi/PlundrixGame.json";
 
-const VAULT_BREAKERS_ADDRESS = "0x..."; // deployed address
+const PLUNDRIX_ADDRESS = "0x..."; // deployed address
 
 // Read game state
 const gameInfo = await publicClient.readContract({
-  address: VAULT_BREAKERS_ADDRESS,
-  abi: VaultBreakersABI,
+  address: PLUNDRIX_ADDRESS,
+  abi: PlundrixABI,
   functionName: "getGameInfo",
   args: [gameID],
 });
 
 // Register as a player
 await walletClient.writeContract({
-  address: VAULT_BREAKERS_ADDRESS,
-  abi: VaultBreakersABI,
+  address: PLUNDRIX_ADDRESS,
+  abi: PlundrixABI,
   functionName: "registerPlayer",
   args: [gameID],
 });
 
 // Submit a PICK action (action enum: 1=PICK, 2=SEARCH, 3=SABOTAGE)
 await walletClient.writeContract({
-  address: VAULT_BREAKERS_ADDRESS,
-  abi: VaultBreakersABI,
+  address: PLUNDRIX_ADDRESS,
+  abi: PlundrixABI,
   functionName: "submitAction",
   args: [gameID, 1, "0x0000000000000000000000000000000000000000"],
 });
 
 // Submit a SABOTAGE action targeting another player
 await walletClient.writeContract({
-  address: VAULT_BREAKERS_ADDRESS,
-  abi: VaultBreakersABI,
+  address: PLUNDRIX_ADDRESS,
+  abi: PlundrixABI,
   functionName: "submitAction",
   args: [gameID, 3, targetPlayerAddress],
 });
 
 // Listen for game events
 publicClient.watchContractEvent({
-  address: VAULT_BREAKERS_ADDRESS,
-  abi: VaultBreakersABI,
+  address: PLUNDRIX_ADDRESS,
+  abi: PlundrixABI,
   eventName: "LockCracked",
   onLogs: (logs) => {
     console.log("Lock cracked!", logs);
@@ -251,8 +251,8 @@ publicClient.watchContractEvent({
 
 // Resolve the round (anyone can call)
 await walletClient.writeContract({
-  address: VAULT_BREAKERS_ADDRESS,
-  abi: VaultBreakersABI,
+  address: PLUNDRIX_ADDRESS,
+  abi: PlundrixABI,
   functionName: "resolveRound",
   args: [gameID],
 });
@@ -262,9 +262,9 @@ await walletClient.writeContract({
 
 # Comparison with Hexploration
 
-| Feature | Hexploration | Vault Breakers |
-|---------|-------------|----------------|
-| Contracts | 12+ (Board, Controller, Queue, Gameplay, ...) | 1 (VaultBreakersGame) |
+| Feature | Hexploration | Plundrix |
+|---------|-------------|----------|
+| Contracts | 12+ (Board, Controller, Queue, Gameplay, ...) | 1 (PlundrixGame) |
 | Randomness | Chainlink VRF v2 / Band Protocol | On-chain pseudo-random (blockhash) |
 | Autoloop | Required (`runUpdate()` keeper) | Not needed |
 | Zones | 100 (10x10 hex grid) | Single zone (the vault) |

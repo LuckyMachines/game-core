@@ -6,12 +6,12 @@ import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
- * @title VaultBreakersGame
- * @notice A single-zone heist game where 2-4 rival thieves compete to crack a vault with 5 locks.
+ * @title PlundrixGame
+ * @notice A single-zone heist game where 2-4 rival operatives compete to crack a vault with 5 locks.
  *         Each round, players choose PICK, SEARCH, or SABOTAGE. First to crack all 5 locks wins.
  *         Self-contained contract -- no autoloop, no VRF, no off-chain keeper needed.
  */
-contract VaultBreakersGame is AccessControlEnumerable {
+contract PlundrixGame is AccessControlEnumerable {
     using Counters for Counters.Counter;
 
     // --- Roles ---
