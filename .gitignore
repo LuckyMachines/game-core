@@ -6,3 +6,12 @@ env.js
 package-lock.json
 yarn.lock
 /local
+
+# Foundry / Hardhat build artifacts
+/cache
+/out
+/out-foundry
+
+# Local-only workspace content
+/.claude
+/games

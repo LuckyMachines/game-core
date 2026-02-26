@@ -223,6 +223,10 @@ A single-contract heist game where 2-4 rival operatives compete to crack a vault
 
 **Repo:** [LuckyMachines/plundrix](https://github.com/LuckyMachines/plundrix)
 
+### About the Local `games/` Folder
+
+`games/` is treated as local workspace material (for example, local app builds or temporary checkouts) and is not the source of truth for Hexploration or Plundrix. The canonical code for those games is in their dedicated repositories above.
+
 ## License
 
 [GPL-3.0-or-later](LICENSE) (GNU General Public License v3)
