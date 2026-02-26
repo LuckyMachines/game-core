@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.8.0;
+pragma solidity 0.8.34;
 
 library XYCoordinates {
     function coordinates(uint256 numRows, uint256 numColumns)

@@ -1,17 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.34;
 
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/extensions/AccessControlEnumerable.sol";
 import "./GameBoard.sol";
 
 contract GameFactory is AccessControlEnumerable {
-    using Counters for Counters.Counter;
-
     bytes32 public constant CREATOR_ROLE = keccak256("CREATOR_ROLE");
 
-    Counters.Counter internal _gameBoardIdTracker;
+    uint256 internal _nextGameBoardId = 1;
 
     address public gameRegistryAddress;
 
@@ -25,10 +22,9 @@ contract GameFactory is AccessControlEnumerable {
     mapping(uint256 => uint256[]) public gameIDs;
 
     constructor(address _gameRegistryAddress) {
-        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setupRole(CREATOR_ROLE, _msgSender());
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        _grantRole(CREATOR_ROLE, _msgSender());
         gameRegistryAddress = _gameRegistryAddress;
-        _gameBoardIdTracker.increment();
     }
 
     function createGameBoard(address gameBoardAdmin)
@@ -41,11 +37,11 @@ contract GameFactory is AccessControlEnumerable {
             address(newGameBoard),
             gameBoardAdmin
         );
-        uint256 currentID = _gameBoardIdTracker.current();
+        uint256 currentID = _nextGameBoardId;
         gameBoards[_msgSender()].push(currentID);
         gameBoardAddress[currentID] = address(newGameBoard);
         playerRegistryAddress[currentID] = address(newPlayerRegistry);
-        _gameBoardIdTracker.increment();
+        _nextGameBoardId++;
     }
 
     function addCustomGameBoard(address _gameBoardAddress)
@@ -62,11 +58,11 @@ contract GameFactory is AccessControlEnumerable {
             _gameBoardAddress,
             gameBoardAdmin
         );
-        uint256 currentID = _gameBoardIdTracker.current();
+        uint256 currentID = _nextGameBoardId;
         customGameBoards[_msgSender()].push(currentID);
         gameBoardAddress[currentID] = _gameBoardAddress;
         playerRegistryAddress[currentID] = address(newPlayerRegistry);
-        _gameBoardIdTracker.increment();
+        _nextGameBoardId++;
     }
 
     function getGameBoards() public view returns (uint256[] memory) {

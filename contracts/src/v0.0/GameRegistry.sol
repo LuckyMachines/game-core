@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.34;
 
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/extensions/AccessControlEnumerable.sol";
 
 // universal registry, for all games across boards
 
 contract GameRegistry is AccessControlEnumerable {
-    using Counters for Counters.Counter;
-    Counters.Counter internal _gameIdTracker;
+    uint256 internal _nextGameId = 1;
     bytes32 public constant GAME_BOARD_ROLE = keccak256("GAME_BOARD_ROLE");
     // mapping from game board address to all game IDs
     mapping(address => uint256[]) public gameIDs;
@@ -16,15 +14,14 @@ contract GameRegistry is AccessControlEnumerable {
     mapping(uint256 => address) public gameBoard;
 
     constructor(address adminAddress) {
-        _setupRole(DEFAULT_ADMIN_ROLE, adminAddress);
-        _gameIdTracker.increment();
+        _grantRole(DEFAULT_ADMIN_ROLE, adminAddress);
     }
 
     function addGameBoard(address gameBoardAddress)
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        _setupRole(GAME_BOARD_ROLE, gameBoardAddress);
+        _grantRole(GAME_BOARD_ROLE, gameBoardAddress);
     }
 
     function registerGame()
@@ -32,11 +29,11 @@ contract GameRegistry is AccessControlEnumerable {
         onlyRole(GAME_BOARD_ROLE)
         returns (uint256 gameID)
     {
-        gameID = _gameIdTracker.current();
+        gameID = _nextGameId;
         gameBoard[gameID] = _msgSender();
         gameIDs[_msgSender()].push(gameID);
 
-        _gameIdTracker.increment();
+        _nextGameId++;
     }
 
     function allGames()

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.34;
 
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/access/extensions/AccessControlEnumerable.sol";
 import "./Ruleset.sol";
 import "./GameBoard.sol";
 import "./GameRegistry.sol";
@@ -56,14 +56,14 @@ contract PlayZone is AccessControlEnumerable {
         gameRegistryAddress = _gameRegistryAddress;
         rulesetAddress = _rulesetAddress;
         rulesetVersion = RULESET.version();
-        _setupRole(DEFAULT_ADMIN_ROLE, adminAddress);
+        _grantRole(DEFAULT_ADMIN_ROLE, adminAddress);
         if (factoryAddress != address(0)) {
-            _setupRole(FACTORY_ROLE, factoryAddress);
+            _grantRole(FACTORY_ROLE, factoryAddress);
         }
     }
 
     function addGameBoard(address gameBoardAddress) public onlyFactoryAdmin {
-        _setupRole(GAME_BOARD_ROLE, gameBoardAddress);
+        _grantRole(GAME_BOARD_ROLE, gameBoardAddress);
     }
 
     function removeGameBoard(address gameBoardAddress)
@@ -74,7 +74,7 @@ contract PlayZone is AccessControlEnumerable {
     }
 
     function addController(address controllerAddress) public onlyFactoryAdmin {
-        _setupRole(CONTROLLER_ROLE, controllerAddress);
+        _grantRole(CONTROLLER_ROLE, controllerAddress);
     }
 
     function removeController(address controllerAddress)

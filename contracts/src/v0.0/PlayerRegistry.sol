@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.34;
 
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
+import "@openzeppelin/contracts/access/extensions/AccessControlEnumerable.sol";
 import "./GameBoard.sol";
 
 // Registry is tied to one game board
@@ -26,8 +26,8 @@ contract PlayerRegistry is AccessControlEnumerable {
 
     constructor(address gameBoardAddress, address adminAddress) {
         GAME_BOARD = GameBoard(gameBoardAddress);
-        _setupRole(DEFAULT_ADMIN_ROLE, adminAddress);
-        _setupRole(GAME_BOARD_ROLE, gameBoardAddress);
+        _grantRole(DEFAULT_ADMIN_ROLE, adminAddress);
+        _grantRole(GAME_BOARD_ROLE, gameBoardAddress);
     }
 
     function canRegister(address _playerAddress, uint256 gameID)

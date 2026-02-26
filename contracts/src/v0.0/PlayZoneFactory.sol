@@ -1,16 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.34;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/extensions/AccessControlEnumerable.sol";
 import "./PlayZone.sol";
 import "./Ruleset.sol";
 import "./GameBoard.sol";
 
 contract PlayZoneFactory is Ownable, AccessControlEnumerable {
-    using Counters for Counters.Counter;
 
     bytes32 public constant CREATOR_ROLE = keccak256("CREATOR_ROLE");
 
@@ -27,9 +25,9 @@ contract PlayZoneFactory is Ownable, AccessControlEnumerable {
     // mapping(uint256 => string[]) public zoneAliases;
     // from game board ID => zone alias - returns play zone address
 
-    constructor(address _gameRegistryAddress) {
-        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setupRole(CREATOR_ROLE, _msgSender());
+    constructor(address _gameRegistryAddress) Ownable(_msgSender()) {
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        _grantRole(CREATOR_ROLE, _msgSender());
 
         gameRegistryAddress = _gameRegistryAddress;
     }

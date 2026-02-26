@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.34;
 
 import "./PlayZone.sol";
 import "./GameBoard.sol";
 
 contract GameController is AccessControlEnumerable {
     constructor(address adminAddress) {
-        _setupRole(DEFAULT_ADMIN_ROLE, adminAddress);
+        _grantRole(DEFAULT_ADMIN_ROLE, adminAddress);
     }
 
     function exitToPath(

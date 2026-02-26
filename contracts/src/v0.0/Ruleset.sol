@@ -1,16 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.34;
 
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/extensions/AccessControlEnumerable.sol";
 
 contract Ruleset is AccessControlEnumerable {
-    using Counters for Counters.Counter;
     bytes32 public constant GAME_MASTER_ROLE = keccak256("GAME_MASTER_ROLE");
     bytes32 public constant FACTORY_ROLE = keccak256("FACTORY_ROLE");
 
-    Counters.Counter internal _rulsetIdTracker;
+    uint256 internal _nextRulesetId = 1;
 
     uint256 public version = 1;
 
@@ -38,13 +36,11 @@ contract Ruleset is AccessControlEnumerable {
     constructor(address adminAddress, address factoryAddress) {
         // Admin set as game master
         // Can revoke role if desired
-        _setupRole(DEFAULT_ADMIN_ROLE, adminAddress);
-        _setupRole(GAME_MASTER_ROLE, adminAddress);
+        _grantRole(DEFAULT_ADMIN_ROLE, adminAddress);
+        _grantRole(GAME_MASTER_ROLE, adminAddress);
         if (factoryAddress != address(0)) {
-            _setupRole(FACTORY_ROLE, factoryAddress);
+            _grantRole(FACTORY_ROLE, factoryAddress);
         }
-        _rulsetIdTracker.increment(); // Start Rulset IDs @ 1
-
         // TODO: create ruleset @ 0 default rules, used when none is set
     }
 
@@ -63,7 +59,7 @@ contract Ruleset is AccessControlEnumerable {
         uint256[] memory ruleValues,
         bool lockAfterSet
     ) external onlyRole(FACTORY_ROLE) returns (uint256 rulesetID) {
-        rulesetID = _rulsetIdTracker.current();
+        rulesetID = _nextRulesetId;
         setAllRules(ruleValues, rulesetID);
         payoutToken[rulesetID] = tokenAddress;
         locked[rulesetID] = lockAfterSet;
@@ -71,8 +67,8 @@ contract Ruleset is AccessControlEnumerable {
     }
 
     function createRuleset(bool[] memory ruleFlags) public onlyFactoryGM {
-        rules[_rulsetIdTracker.current()] = ruleFlags;
-        _rulsetIdTracker.increment();
+        rules[_nextRulesetId] = ruleFlags;
+        _nextRulesetId++;
     }
 
     function getAllRules(uint256 rulesetID)

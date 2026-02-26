@@ -4,7 +4,8 @@
   "description": "Components for building on chain game backends.",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:solidity": "forge test"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,12 @@
     "url": "https://github.com/LuckyMachines/game-core/issues"
   },
   "homepage": "https://github.com/LuckyMachines/game-core#readme",
+  "publishConfig": {
+    "registry": "https://packages.luckymachines.io"
+  },
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",
-    "@openzeppelin/contracts": "^4.6.0"
+    "@openzeppelin/contracts": "^5.5.0"
   },
   "devDependencies": {
     "dotenv": "^17.3.1",

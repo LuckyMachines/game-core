@@ -1,15 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity 0.8.34;
 
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/extensions/AccessControlEnumerable.sol";
 import "./PlayerRegistry.sol";
 import "./GameRegistry.sol";
 import "./PlayZone.sol";
 
 contract GameBoard is AccessControlEnumerable {
-    using Counters for Counters.Counter;
     bytes32 public constant VERIFIED_CONTROLLER_ROLE =
         keccak256("VERIFIED_CONTROLLER_ROLE");
     bytes32 public constant GAME_MASTER_ROLE = keccak256("GAME_MASTER_ROLE");
@@ -45,6 +43,46 @@ contract GameBoard is AccessControlEnumerable {
     mapping(uint256 => mapping(uint256 => string)) public currentPlayZone;
     mapping(uint256 => uint256[]) public entryQueue; //overflow if playzone 0 cannot be entered
 
+    struct TransitAction {
+        address playerAddress;
+        uint256 pathIndex;
+        bool processed;
+        bool success;
+    }
+
+    // Transit state
+    mapping(uint256 => uint256) public transitGameID; // transitID -> gameID
+    mapping(uint256 => mapping(uint256 => TransitAction[])) private transitQueue;
+    mapping(uint256 => mapping(uint256 => bool)) public transitStarted;
+    mapping(uint256 => mapping(uint256 => bool)) public transitComplete;
+    mapping(uint256 => mapping(uint256 => uint256)) public transitProgress;
+    mapping(uint256 => mapping(uint256 => uint256)) public transitSuccessfulMoves;
+    mapping(uint256 => mapping(uint256 => uint256)) public transitFailedMoves;
+
+    event TransitQueued(
+        uint256 indexed gameID,
+        uint256 indexed transitID,
+        uint256 queuedCount
+    );
+    event TransitStarted(
+        uint256 indexed gameID,
+        uint256 indexed transitID,
+        uint256 totalQueued
+    );
+    event TransitStepProcessed(
+        uint256 indexed gameID,
+        uint256 indexed transitID,
+        uint256 index,
+        address playerAddress,
+        bool success
+    );
+    event TransitCompleted(
+        uint256 indexed gameID,
+        uint256 indexed transitID,
+        uint256 successfulMoves,
+        uint256 failedMoves
+    );
+
     modifier onlyFactoryGM() {
         require(
             hasRole(FACTORY_ROLE, _msgSender()) ||
@@ -57,8 +95,8 @@ contract GameBoard is AccessControlEnumerable {
     constructor(address adminAddress) {
         // Admin set as game master
         // Can revoke role if desired
-        _setupRole(DEFAULT_ADMIN_ROLE, adminAddress);
-        _setupRole(GAME_MASTER_ROLE, adminAddress);
+        _grantRole(DEFAULT_ADMIN_ROLE, adminAddress);
+        _grantRole(GAME_MASTER_ROLE, adminAddress);
     }
 
     function prAddress() public view returns (address) {
@@ -96,7 +134,7 @@ contract GameBoard is AccessControlEnumerable {
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
-        _setupRole(FACTORY_ROLE, factoryAddress);
+        _grantRole(FACTORY_ROLE, factoryAddress);
     }
 
     function isFactory(address factoryAddress)
@@ -129,7 +167,7 @@ contract GameBoard is AccessControlEnumerable {
             playZones[gameID].push(zoneAliases[i]);
             zoneAlias[gameID][zoneAliases[i]] = playZoneAddresses[i];
             if (!hasRole(PLAY_ZONE_ROLE, playZoneAddresses[i])) {
-                _setupRole(PLAY_ZONE_ROLE, playZoneAddresses[i]);
+                _grantRole(PLAY_ZONE_ROLE, playZoneAddresses[i]);
             }
         }
     }
@@ -138,7 +176,7 @@ contract GameBoard is AccessControlEnumerable {
         public
         onlyRole(GAME_MASTER_ROLE)
     {
-        _setupRole(VERIFIED_CONTROLLER_ROLE, keeperAddress);
+        _grantRole(VERIFIED_CONTROLLER_ROLE, keeperAddress);
     }
 
     function addVerifiedController(address vcAddress)
@@ -341,7 +379,14 @@ contract GameBoard is AccessControlEnumerable {
         address playerAddress,
         uint256 pathIndex
     ) external virtual returns (bool exitSuccess) {
-        // TODO: make sure zone calling is same as zone player is trying to exit
+        exitSuccess = _exitToPath(gameID, playerAddress, pathIndex);
+    }
+
+    function _exitToPath(
+        uint256 gameID,
+        address playerAddress,
+        uint256 pathIndex
+    ) internal returns (bool exitSuccess) {
         uint256 playerID = PLAYER_REGISTRY.playerID(gameID, playerAddress);
         string memory originZoneAlias = currentPlayZone[gameID][playerID];
         string[] memory outputs = getOutputs(gameID, originZoneAlias);
@@ -352,7 +397,7 @@ contract GameBoard is AccessControlEnumerable {
 
         PlayZone originPlayZone = PlayZone(zoneAlias[gameID][originZoneAlias]);
 
-        uint256 path = pathIndex > availablePaths ? 0 : pathIndex;
+        uint256 path = pathIndex >= availablePaths ? 0 : pathIndex;
         string memory destinationZoneAlias = outputs[path];
         PlayZone destinationPlayZone = PlayZone(
             zoneAlias[gameID][destinationZoneAlias]
@@ -390,22 +435,154 @@ contract GameBoard is AccessControlEnumerable {
         currentPlayZone[gameID][playerID] = _zoneAlias;
     }
 
-    // TODO: implement mass transit
-    // can set as many of these up as needed for mass transit
     function queueExitToPaths(
         uint256 gameID,
         address[] memory playerAddresses,
         uint256[] memory pathIndices,
         uint256 transitID
-    ) public onlyRole(PLAY_ZONE_ROLE) {}
+    ) public onlyRole(PLAY_ZONE_ROLE) {
+        require(
+            playerAddresses.length == pathIndices.length,
+            "players/paths length mismatch"
+        );
+        require(playerAddresses.length > 0, "empty transit batch");
 
-    function startTransit(uint256 transitID) public onlyRole(PLAY_ZONE_ROLE) {}
+        uint256 trackedGameID = transitGameID[transitID];
+        if (trackedGameID == 0) {
+            transitGameID[transitID] = gameID;
+        } else {
+            require(trackedGameID == gameID, "transitID belongs to another game");
+        }
+        require(!transitStarted[gameID][transitID], "transit already started");
+
+        for (uint256 i = 0; i < playerAddresses.length; i++) {
+            transitQueue[gameID][transitID].push(
+                TransitAction({
+                    playerAddress: playerAddresses[i],
+                    pathIndex: pathIndices[i],
+                    processed: false,
+                    success: false
+                })
+            );
+        }
+
+        emit TransitQueued(gameID, transitID, transitQueue[gameID][transitID].length);
+    }
+
+    function startTransit(uint256 transitID) public onlyRole(PLAY_ZONE_ROLE) {
+        uint256 gameID = transitGameID[transitID];
+        require(gameID != 0, "unknown transitID");
+        require(!transitStarted[gameID][transitID], "transit already started");
+        require(
+            transitQueue[gameID][transitID].length > 0,
+            "transit queue empty"
+        );
+
+        transitStarted[gameID][transitID] = true;
+        emit TransitStarted(
+            gameID,
+            transitID,
+            transitQueue[gameID][transitID].length
+        );
+    }
 
     function _progressTransit(uint256 transitID)
         public
         onlyRole(VERIFIED_CONTROLLER_ROLE)
     {
-        // moves group transit along, marks as complete at finish
+        uint256 gameID = transitGameID[transitID];
+        require(gameID != 0, "unknown transitID");
+        require(transitStarted[gameID][transitID], "transit not started");
+        require(!transitComplete[gameID][transitID], "transit complete");
+
+        _progressTransitBatch(gameID, transitID, MAX_BATCH_SIZE);
+    }
+
+    function _progressTransitBatch(
+        uint256 gameID,
+        uint256 transitID,
+        uint256 batchSize
+    ) internal {
+        TransitAction[] storage actions = transitQueue[gameID][transitID];
+        uint256 cursor = transitProgress[gameID][transitID];
+        require(cursor < actions.length, "no transit actions pending");
+
+        uint256 end = cursor + batchSize;
+        if (end > actions.length) {
+            end = actions.length;
+        }
+
+        for (uint256 i = cursor; i < end; i++) {
+            TransitAction storage action = actions[i];
+            (bool callOk, bytes memory callData) = address(this).call(
+                abi.encodeWithSelector(
+                    this.exitToPath.selector,
+                    gameID,
+                    action.playerAddress,
+                    action.pathIndex
+                )
+            );
+            bool moved = callOk &&
+                callData.length >= 32 &&
+                abi.decode(callData, (bool));
+            action.processed = true;
+            action.success = moved;
+            if (moved) {
+                transitSuccessfulMoves[gameID][transitID]++;
+            } else {
+                transitFailedMoves[gameID][transitID]++;
+            }
+            emit TransitStepProcessed(
+                gameID,
+                transitID,
+                i,
+                action.playerAddress,
+                moved
+            );
+        }
+
+        transitProgress[gameID][transitID] = end;
+
+        if (end == actions.length) {
+            transitComplete[gameID][transitID] = true;
+            emit TransitCompleted(
+                gameID,
+                transitID,
+                transitSuccessfulMoves[gameID][transitID],
+                transitFailedMoves[gameID][transitID]
+            );
+        }
+    }
+
+    function getTransitLength(uint256 gameID, uint256 transitID)
+        public
+        view
+        returns (uint256)
+    {
+        return transitQueue[gameID][transitID].length;
+    }
+
+    function getTransitEntry(
+        uint256 gameID,
+        uint256 transitID,
+        uint256 index
+    )
+        public
+        view
+        returns (
+            address playerAddress,
+            uint256 pathIndex,
+            bool processed,
+            bool success
+        )
+    {
+        TransitAction storage action = transitQueue[gameID][transitID][index];
+        return (
+            action.playerAddress,
+            action.pathIndex,
+            action.processed,
+            action.success
+        );
     }
 
     function connectionZonesValid(
