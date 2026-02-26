@@ -1,7 +1,7 @@
 {
   "name": "@luckymachines/game-core",
-  "version": "0.0.56",
-  "description": "Components for building on chain game backends.",
+  "version": "0.1.0",
+  "description": "Smart-contract framework for building modular on-chain game backends with board transit, rulesets, and randomness.",
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
@@ -13,7 +13,13 @@
   },
   "keywords": [
     "blockchain",
-    "gaming"
+    "gaming",
+    "on-chain games",
+    "solidity",
+    "game framework",
+    "autoloop",
+    "vrf",
+    "ethereum"
   ],
   "author": "Max Meier",
   "license": "GPL-3.0-or-later",
@@ -21,6 +27,9 @@
     "url": "https://github.com/LuckyMachines/game-core/issues"
   },
   "homepage": "https://github.com/LuckyMachines/game-core#readme",
+  "files": [
+    "contracts/"
+  ],
   "publishConfig": {
     "registry": "https://packages.luckymachines.io"
   },
