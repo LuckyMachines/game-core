@@ -23,12 +23,13 @@ Recommended flow for autonomous tooling:
 
 ### Via npm (recommended)
 
-Game Core is published to the Lucky Machines package registry.
+Game Core is published to the Lucky Machines Verdaccio registry.
 
 Add the registry to your project's `.npmrc`:
 
 ```
-@luckymachines:registry=https://packages.luckymachines.io
+registry=http://localhost:4873
+@luckymachines:registry=http://localhost:4873
 ```
 
 Then install:

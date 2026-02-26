@@ -1,9 +1,9 @@
 {
   "name": "@luckymachines/game-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Smart-contract framework for building modular on-chain game backends with board transit, rulesets, and randomness.",
   "scripts": {
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "test:solidity": "forge test"
   },
@@ -31,7 +31,7 @@
     "contracts/"
   ],
   "publishConfig": {
-    "registry": "https://packages.luckymachines.io"
+    "registry": "http://localhost:4873"
   },
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",
