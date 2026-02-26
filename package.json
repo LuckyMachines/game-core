@@ -1,8 +1,15 @@
 {
   "name": "@luckymachines/game-core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Smart-contract framework for building modular on-chain game backends with board transit, rulesets, and randomness.",
   "scripts": {
+    "registry:set": "node scripts/registry-config.cjs",
+    "registry:show": "node scripts/registry-config.cjs show",
+    "registry:local": "node scripts/registry-config.cjs local",
+    "registry:staging": "node scripts/registry-config.cjs staging",
+    "registry:prod": "node scripts/registry-config.cjs prod",
+    "registry:ping": "node scripts/registry-config.cjs ping",
+    "publish:registry": "node scripts/publish-registry.cjs",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "test:solidity": "forge test"
@@ -30,9 +37,6 @@
   "files": [
     "contracts/"
   ],
-  "publishConfig": {
-    "registry": "http://localhost:4873"
-  },
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",
     "@openzeppelin/contracts": "^5.5.0"
