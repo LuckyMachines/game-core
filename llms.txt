@@ -1,0 +1,37 @@
+# Lucky Machines Game Core
+
+Game Core provides modular smart-contract infrastructure for on-chain games: boards, zones, player state, transit batching, and randomness integration.
+
+## Canonical Files
+
+- `README.md` - architecture, installation, and testing
+- `contracts/src/v0.0/GameBoard.sol` - board and transit lifecycle
+- `contracts/src/v0.0/GameFactory.sol` - game instance creation
+- `contracts/src/v0.0/PlayerRegistry.sol` - per-game player registration
+- `contracts/src/v0.0/PlayZone.sol` - zone behavior primitives
+- `contracts/src/v0.0/Ruleset.sol` - configurable game rules
+- `contracts/src/v0.0/VRFVerifier.sol` - AutoLoop-compatible VRF proof verifier
+
+## Transit and Batch APIs
+
+- `queueExitToPaths(gameID, playerAddresses, pathIndices, transitID)`
+- `startTransit(transitID)`
+- `_progressTransit(transitID)`
+- `getTransitLength(gameID, transitID)`
+- `transitProgress(gameID, transitID)`
+- `transitComplete(gameID, transitID)`
+
+## Test Entry Points
+
+- JavaScript: `npm test`
+- Solidity (Foundry): `npm run test:solidity`
+- Transit integration tests:
+  - `test/GameBoardTransit.t.sol`
+  - `test/GameBoardTransitBatch.t.sol`
+
+## Related Repositories
+
+- `../AUTOLOOP_STUFF/autoloop` - automation contract layer
+- `../AUTOLOOP_STUFF/autoloop-worker` - off-chain controller
+- `../RCS_Racerverse_Transit_System` - hub-style transit architecture
+
