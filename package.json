@@ -1,45 +1,30 @@
 {
   "name": "@luckymachines/game-core",
-  "version": "0.1.2",
-  "description": "Smart-contract framework for building modular on-chain game backends with board transit, rulesets, and randomness.",
+  "version": "0.0.56",
+  "description": "Components for building on chain game backends.",
   "scripts": {
-    "registry:set": "node scripts/registry-config.cjs",
-    "registry:show": "node scripts/registry-config.cjs show",
-    "registry:local": "node scripts/registry-config.cjs local",
-    "registry:staging": "node scripts/registry-config.cjs staging",
-    "registry:prod": "node scripts/registry-config.cjs prod",
-    "registry:ping": "node scripts/registry-config.cjs ping",
-    "publish:registry": "node scripts/publish-registry.cjs",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run",
     "test:watch": "vitest",
-    "test:solidity": "forge test"
+    "import-abis": "node local/import-xenovoya.js",
+    "chainlink-addresses": "node local/chainlink-addresses.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LuckyMachines/game-core.git"
+    "url": "git+https://github.com/StudioMaxIO/game-core.git"
   },
   "keywords": [
     "blockchain",
-    "gaming",
-    "on-chain games",
-    "solidity",
-    "game framework",
-    "autoloop",
-    "vrf",
-    "ethereum"
+    "gaming"
   ],
   "author": "Max Meier",
   "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/LuckyMachines/game-core/issues"
+    "url": "https://github.com/StudioMaxIO/game-core/issues"
   },
-  "homepage": "https://github.com/LuckyMachines/game-core#readme",
-  "files": [
-    "contracts/"
-  ],
+  "homepage": "https://github.com/StudioMaxIO/game-core#readme",
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",
-    "@openzeppelin/contracts": "^5.5.0"
+    "@openzeppelin/contracts": "^4.6.0"
   },
   "devDependencies": {
     "dotenv": "^17.3.1",

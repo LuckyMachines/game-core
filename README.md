@@ -4,71 +4,20 @@ Components for building on-chain game backends.
 
 ## Overview
 
-Game Core is a modular smart contract framework for creating fully on-chain games. It provides the foundational infrastructure -- game boards, player management, zone-based movement, rule systems, gas management, and randomness -- so game developers can focus on gameplay logic rather than boilerplate.
+Game Core is a modular smart contract framework for creating fully on-chain games. It provides the foundational infrastructure -- game boards, player management, zone-based movement, rule systems, and randomness -- so game developers can focus on gameplay logic rather than boilerplate.
 
 The framework follows a factory pattern: deploy the core infrastructure once, then dynamically create game instances with custom boards, zones, and rulesets.
 
-## AI Agent Quickstart
-
-Machine-readable repository context is available in `llms.txt`.
-
-Recommended flow for autonomous tooling:
-
-1. Read `llms.txt` and this `README.md`
-2. Validate JavaScript tests with `npm test`
-3. Validate Solidity transit lifecycle with `npm run test:solidity`
-4. Start integration from `contracts/src/v0.0/GameBoard.sol` and `GameFactory.sol`
-
 ## Installation
 
-### Via npm (recommended)
-
-Game Core is published to the Lucky Machines Verdaccio registry.
-
-Set the registry profile for this repo:
-
 ```bash
-npm run registry:local    # http://localhost:4873
-npm run registry:staging  # https://staging-packages.luckymachines.io
-npm run registry:prod     # https://packages.luckymachines.io
-npm run registry:set -- custom https://your-registry.example.com
-npm run registry:ping
+yarn add @luckymachines/game-core
 ```
 
-Then install:
+or
 
 ```bash
 npm install @luckymachines/game-core
-```
-
-Publish to the configured registry:
-
-```bash
-npm run publish:registry
-```
-
-For Hardhat projects, imports resolve automatically from `node_modules`:
-
-```solidity
-import "@luckymachines/game-core/contracts/src/v0.0/GameBoard.sol";
-```
-
-For Foundry projects, add a remapping to `remappings.txt`:
-
-```
-@luckymachines/game-core/=node_modules/@luckymachines/game-core/
-```
-
-### As a Git Submodule (alternative)
-
-```bash
-forge install LuckyMachines/game-core
-```
-
-Then add the remapping to `remappings.txt`:
-
-```
-@luckymachines/game-core/=lib/game-core/
 ```
 
 ## Project Structure
@@ -82,20 +31,28 @@ game-core/
 │   │   ├── GameRegistry.sol      # Universal registry for all games
 │   │   ├── GameController.sol    # Player action submission
 │   │   ├── GameEvents.sol        # Centralized event emission
-│   │   ├── GasStation.sol        # Gas management for meta-transactions
 │   │   ├── PlayerRegistry.sol    # Player registration and management
 │   │   ├── PlayZone.sol          # Individual play zone logic
 │   │   ├── PlayZoneFactory.sol   # Factory for creating play zones
-│   │   ├── RandomnessConsumer.sol # Chainlink VRF + Mock VRF
+│   │   ├── RandomnessConsumer.sol # Chainlink VRF + Band Protocol VRF
 │   │   ├── Ruleset.sol           # Game rule definitions
 │   │   ├── libraries/
 │   │   │   └── XYCoords.sol      # Coordinate string generation (up to 50x50)
 │   │   ├── custom_boards/
 │   │   │   └── HexGrid.sol       # Hexagonal grid board implementation
-│   │   └── custom_zones/
-│   │       ├── BackDoor.sol      # Zone that kicks players to a specific path
-│   │       └── LuckyDuck.sol     # Zone with random path selection
+│   │   ├── custom_zones/
+│   │   │   ├── BackDoor.sol      # Zone that kicks players to a specific path
+│   │   │   └── LuckyDuck.sol     # Zone with random path selection
+│   │   └── custom_games/
+│   │       └── VaultBreakersGame.sol  # Self-contained heist game
 │   └── abi/v0.0/                 # Compiled contract ABIs
+├── games/
+│   ├── xenovoya/             # Xenovoya game implementation
+│   │   ├── abi/                   # Game-specific ABIs
+│   │   ├── deployments.json       # Deployed contract addresses (3 networks)
+│   │   └── README.md              # Xenovoya API documentation
+│   └── vault-breakers/           # Vault Breakers game implementation
+│       └── README.md              # Vault Breakers API documentation
 ├── package.json
 └── LICENSE                        # GPL-3.0-or-later
 ```
@@ -115,9 +72,7 @@ game-core/
 | **Ruleset** | Configurable game rules: max capacity, entry/exit sizes, payouts, lockable rulesets |
 | **GameEvents** | Centralized event emission contract decoupled from game state logic |
 | **GameController** | Interface for players to submit actions |
-| **GasStation** | Gas management contract for subsidizing player transactions |
-| **RandomnessConsumer** | Randomness provider supporting Chainlink VRF v2 and mock VRF for testing |
-| **VRFVerifier** | ECVRF-SECP256K1-SHA256-TAI proof verification library for AutoLoop VRF |
+| **RandomnessConsumer** | Dual randomness provider supporting Chainlink VRF v2 and Band Protocol VRF |
 
 ### Custom Implementations
 
@@ -143,99 +98,83 @@ game-core/
 4. Deploy `PlayZone` implementation(s)
 5. Use `GameFactory` to create `GameBoard` + `PlayerRegistry` dynamically
 
-### Group Transit (Mass Movement)
-
-`GameBoard` now includes first-class queued transit for moving multiple players in controlled batches:
-
-1. `queueExitToPaths(gameID, playerAddresses, pathIndices, transitID)` - queue one transit batch from a PlayZone
-2. `startTransit(transitID)` - mark the queued batch active
-3. `_progressTransit(transitID)` - controller processes up to `MAX_BATCH_SIZE` moves per call
-
-Status helpers:
-
-- `getTransitLength(gameID, transitID)`
-- `getTransitEntry(gameID, transitID, index)`
-- `transitStarted(gameID, transitID)`
-- `transitComplete(gameID, transitID)`
-- `transitProgress(gameID, transitID)`
-
-Emitted events:
-
-- `TransitQueued`
-- `TransitStarted`
-- `TransitStepProcessed`
-- `TransitCompleted`
-
 ## Dependencies
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `@openzeppelin/contracts` | ^5.5.0 | AccessControlEnumerable, ReentrancyGuard |
+| `@openzeppelin/contracts` | ^4.6.0 | AccessControl, Counters |
 | `@chainlink/contracts` | ^0.5.1 | VRF v2 randomness |
 
-## Testing
+## Games
 
-JavaScript tests:
+### Xenovoya
 
-```bash
-npm test
+An on-chain adventure/exploration game played on a 10x10 hexagonal grid. Players explore zones, collect artifacts, draw event cards (Ambush, Event, Treasure, Relic decks), and manage inventory across Day/Night phase cycles. 1-4 players per game.
+
+See [`games/xenovoya/README.md`](games/xenovoya/README.md) for the full API reference including contract functions, events, enumerations, and structs.
+
+#### Quick Start (Frontend Integration)
+
+```js
+import GameSummaryABI from "@luckymachines/game-core/games/xenovoya/abi/GameSummary.json";
+import PlayerSummaryABI from "@luckymachines/game-core/games/xenovoya/abi/PlayerSummary.json";
+import ControllerABI from "@luckymachines/game-core/games/xenovoya/abi/XenovoyaController.json";
+import EventsABI from "@luckymachines/game-core/games/xenovoya/abi/GameEvents.json";
 ```
 
-Solidity integration tests (Foundry):
+#### Key Integration Points
 
-```bash
-npm run test:solidity
+| Contract | Role |
+|----------|------|
+| **XenovoyaController** | Players submit moves (register, request new game, submit actions) |
+| **GameEvents** | Subscribe to game events (phase changes, actions, game over, etc.) |
+| **GameSummary** | Read game state: zones, locations, inventories, artifacts (view functions, no gas) |
+| **PlayerSummary** | Read player state: stats, inventory, location, status (view functions, no gas) |
+| **PlayZoneSummary** | Read zone inventories (view functions, no gas) |
+
+#### Deployed Networks
+
+Contract addresses for all networks are in [`games/xenovoya/deployments.json`](games/xenovoya/deployments.json).
+
+| Network | Status | Randomness Provider |
+|---------|--------|---------------------|
+| **Sepolia** | Active | Chainlink VRF v2 |
+| **Godwoken Testnet** | Active | Band Protocol VRF |
+| **Mumbai** (Polygon) | Historical | Chainlink VRF v2 + Band Protocol |
+
+### Vault Breakers
+
+A single-zone heist game where 2-4 rival thieves compete to crack a vault with 5 locks. Each round, players choose PICK (crack a lock), SEARCH (find tools), or SABOTAGE (stun a rival and steal a tool). First to crack all 5 locks wins.
+
+See [`games/vault-breakers/README.md`](games/vault-breakers/README.md) for the full API reference including contract functions, events, and integration examples.
+
+#### Quick Start (Frontend Integration)
+
+```js
+import VaultBreakersABI from "@luckymachines/game-core/games/vault-breakers/abi/VaultBreakersGame.json";
 ```
 
-The transit lifecycle coverage lives in:
+#### Key Integration Points
 
-- `test/GameBoardTransit.t.sol`
-- `test/GameBoardTransitBatch.t.sol` (multi-call progression when queued actions exceed `MAX_BATCH_SIZE`)
+| Contract | Role |
+|----------|------|
+| **VaultBreakersGame** | Single contract: create games, register players, submit actions, resolve rounds, read state |
 
-## Randomness Options
+#### Architecture Differences from Xenovoya
 
-Game Core supports three randomness approaches:
+| Feature | Xenovoya | Vault Breakers |
+|---------|-------------|----------------|
+| Contracts | 12+ | 1 (self-contained) |
+| Randomness | Chainlink VRF v2 | On-chain pseudo-random |
+| Autoloop | Required (off-chain keeper) | Not needed |
+| Deploy | Multi-step factory pattern | Single contract deploy |
 
-### Mock VRF (testing / low-cost)
+## NPM Scripts
 
-`RandomnessConsumer` provides a built-in mock VRF that uses blockhash-based pseudo-randomness. No external tokens or subscriptions required. Suitable for testing and low-cost deployments where provable fairness is not critical.
-
-### Chainlink VRF (alternative)
-
-`RandomnessConsumer` also supports Chainlink VRF v2 for provably fair randomness. Requires a funded Chainlink VRF subscription and LINK tokens. Two-transaction pattern: request randomness, then a separate callback fulfills it.
-
-### AutoLoop VRF (recommended for production)
-
-`VRFVerifier` enables a single-transaction VRF pattern when combined with [AutoLoop](https://github.com/LuckyMachines/autoloop). The automation worker generates an ECVRF proof off-chain, passes it to `progressLoop()`, and the contract verifies the proof on-chain — all in one transaction.
-
-Benefits over the 2-tx pattern:
-- **Cheaper** — no separate VRF fulfillment transaction
-- **Faster** — randomness arrives in the same call as game processing
-- **Cryptographically verifiable** — ECVRF-SECP256K1-SHA256-TAI proof verified on-chain
-- **No Chainlink fees** — no LINK tokens or VRF subscription needed
-
-To use AutoLoop VRF in your game:
-1. Import `VRFVerifier.sol` from game-core
-2. Use `AutoLoopVRFCompatible` from the [autoloop repo](https://github.com/LuckyMachines/autoloop) as your base contract
-3. Implement VRF proof generation in your automation worker (see Hexploration for a reference implementation)
-
-## Games Built on Game Core
-
-### Hexploration
-
-An on-chain multiplayer explore & escape game played on a 10x10 hexagonal grid. Players explore zones, collect artifacts, draw event cards, and manage inventory across Day/Night phase cycles. 1-4 players per game. Uses 12+ contracts including the full Game Core framework with Chainlink VRF for randomness.
-
-**Repo:** [LuckyMachines/hexploration](https://github.com/LuckyMachines/hexploration)
-
-### Plundrix
-
-A single-contract heist game where 2-4 rival operatives compete to crack a vault with 5 locks. Each round, players choose PICK, SEARCH, or SABOTAGE. Self-contained in one contract with on-chain pseudo-random resolution.
-
-**Repo:** [LuckyMachines/plundrix](https://github.com/LuckyMachines/plundrix)
-
-### About the Local `games/` Folder
-
-`games/` is treated as local workspace material (for example, local app builds or temporary checkouts) and is not the source of truth for Hexploration or Plundrix. The canonical code for those games is in their dedicated repositories above.
+```bash
+npm run import-abis          # Import Xenovoya ABIs from deployment
+npm run chainlink-addresses  # Generate Chainlink address information
+```
 
 ## License
 
