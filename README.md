@@ -169,12 +169,50 @@ import VaultBreakersABI from "@luckymachines/game-core/games/vault-breakers/abi/
 | Autoloop | Required (off-chain keeper) | Not needed |
 | Deploy | Multi-step factory pattern | Single contract deploy |
 
-## NPM Scripts
+## Randomness Options
 
-```bash
-npm run import-abis          # Import Xenovoya ABIs from deployment
-npm run chainlink-addresses  # Generate Chainlink address information
-```
+Game Core supports three randomness approaches:
+
+### Mock VRF (testing / low-cost)
+
+`RandomnessConsumer` provides a built-in mock VRF that uses blockhash-based pseudo-randomness. No external tokens or subscriptions required. Suitable for testing and low-cost deployments where provable fairness is not critical.
+
+### Chainlink VRF (alternative)
+
+`RandomnessConsumer` also supports Chainlink VRF v2 for provably fair randomness. Requires a funded Chainlink VRF subscription and LINK tokens. Two-transaction pattern: request randomness, then a separate callback fulfills it.
+
+### AutoLoop VRF (recommended for production)
+
+`VRFVerifier` enables a single-transaction VRF pattern when combined with [AutoLoop](https://github.com/LuckyMachines/autoloop). The automation worker generates an ECVRF proof off-chain, passes it to `progressLoop()`, and the contract verifies the proof on-chain — all in one transaction.
+
+Benefits over the 2-tx pattern:
+- **Cheaper** — no separate VRF fulfillment transaction
+- **Faster** — randomness arrives in the same call as game processing
+- **Cryptographically verifiable** — ECVRF-SECP256K1-SHA256-TAI proof verified on-chain
+- **No Chainlink fees** — no LINK tokens or VRF subscription needed
+
+To use AutoLoop VRF in your game:
+1. Import `VRFVerifier.sol` from game-core
+2. Use `AutoLoopVRFCompatible` from the [autoloop repo](https://github.com/LuckyMachines/autoloop) as your base contract
+3. Implement VRF proof generation in your automation worker (see Xenovoya for a reference implementation)
+
+## Games Built on Game Core
+
+### Xenovoya
+
+An on-chain multiplayer explore & escape game played on a 10x10 hexagonal grid. Players explore zones, collect artifacts, draw event cards, and manage inventory across Day/Night phase cycles. 1-4 players per game. Uses 12+ contracts including the full Game Core framework with Chainlink VRF for randomness.
+
+**Repo:** [LuckyMachines/xenovoya](https://github.com/LuckyMachines/xenovoya)
+
+### Plundrix
+
+A single-contract heist game where 2-4 rival operatives compete to crack a vault with 5 locks. Each round, players choose PICK, SEARCH, or SABOTAGE. Self-contained in one contract with on-chain pseudo-random resolution.
+
+**Repo:** [LuckyMachines/plundrix](https://github.com/LuckyMachines/plundrix)
+
+### About the Local `games/` Folder
+
+`games/` is treated as local workspace material (for example, local app builds or temporary checkouts) and is not the source of truth for Xenovoya or Plundrix. The canonical code for those games is in their dedicated repositories above.
 
 ## License
 
